@@ -31,6 +31,7 @@ def scapy_ping_scan(network):
 
 
 if __name__ == '__main__':
+    # 使用Linux解释器
     import time
 
     t1 = time.time()

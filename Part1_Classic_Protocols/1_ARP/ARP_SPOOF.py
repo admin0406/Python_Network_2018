@@ -57,6 +57,7 @@ def sigint_handler(signum, frame):  # 定义处理方法
 
 
 if __name__ == "__main__":
+    # 使用Linux解释器
     arp_spoof('10.1.1.253', '10.1.1.200')
     # from optparse import OptionParser
     # usage = "usage: ./scapy_arp_spoof 被欺骗主机IP 伪装主机的IP -i interface"
