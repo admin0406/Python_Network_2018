@@ -9,8 +9,8 @@ import logging
 
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)  # 清除报错
 from scapy.all import *
-from GET_IP_IFCONFIG import get_ip_address_ifconfig  # 导入获取本机IP地址方法
-from GET_MAC import get_mac_address  # 导入获取本机MAC地址方法
+from Part1_Classic_Protocols.Tools.GET_IP_IFCONFIG import get_ip_address_ifconfig  # 导入获取本机IP地址方法
+from Part1_Classic_Protocols.Tools.GET_MAC import get_mac_address  # 导入获取本机MAC地址方法
 from ARP_Request import arp_request  # 导入之前创建的ARP请求脚本
 import time
 import signal

@@ -8,8 +8,8 @@ import logging
 
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)  # 清除报错
 from scapy.all import *
-from GET_IP_IFCONFIG import get_ip_address_ifconfig  # 获取本机IP地址
-from GET_MAC import get_mac_address  # 获取本机MAC地址
+from Part1_Classic_Protocols.Tools.GET_IP_IFCONFIG import get_ip_address_ifconfig  # 获取本机IP地址
+from Part1_Classic_Protocols.Tools.GET_MAC import get_mac_address  # 获取本机MAC地址
 
 
 def arp_request(ip_address, ifname='ens33'):

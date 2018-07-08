@@ -5,7 +5,7 @@
 # 亁颐堂官网www.qytang.com
 
 
-from minimumTFTP.minimumTFTP import Server
+from Part1_Classic_Protocols.Tools.minimumTFTP import Server
 
 
 def qyt_tftpserver(dir):
@@ -15,6 +15,5 @@ def qyt_tftpserver(dir):
 
 if __name__ == '__main__':
     # 使用Linux解释器
-    # 正常安装有问题,需要把minimumTFTP.py文件放入如下的路径
     # /usr/local/lib/python3.6/site-packages/minimumTFTP/minimumTFTP.py
     qyt_tftpserver('./tftpdir')

@@ -5,7 +5,7 @@
 # 亁颐堂官网www.qytang.com
 
 
-from minimumTFTP.minimumTFTP import Client
+from Part1_Classic_Protocols.Tools.minimumTFTP import Client
 
 
 def qyt_ftpclient(server, filedir, file, operation=1):
