@@ -9,7 +9,6 @@ import logging
 
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)  # 清除报错
 from scapy.all import *
-from PyQYT.Network.Tools import Change_MAC_To_Bytes
 import time
 
 
@@ -37,4 +36,4 @@ def DHCP_Request_Sendonly(ifname, options, wait_time=1):
 if __name__ == '__main__':
     options = {'MAC': '00:0c:29:8d:5c:b6', 'Server_IP': '202.100.1.168', 'requested_addr': '202.100.1.1',
                'client_id': b'\x00\x0c)\x8d\\\xb6'}
-    DHCP_Request_Sendonly('eno33554944', options)
+    DHCP_Request_Sendonly('ens33', options)

@@ -11,23 +11,23 @@ logging.getLogger("scapy.runtime").setLevel(logging.ERROR)  # 清除报错
 from scapy.all import *
 import multiprocessing
 import struct
-from PyQYT.Network.Tools.Change_MAC_To_Bytes import Change_MAC_To_Bytes
-from PyQYT.Network.Tools.GET_MAC import GET_MAC
-from PyQYT.Network.Tools.Change_Chaddr_To_MAC import Change_Chaddr_To_MAC
-from PyQYT.Network.Tools.Random_MAC import Random_MAC
-from PyQYT.Network.DHCP.DHCP_Discover import DHCP_Discover_Sendonly
-from PyQYT.Network.DHCP.DHCP_Request import DHCP_Request_Sendonly
+from Part1_Classic_Protocols.Tools.Change_MAC_To_Bytes import Change_MAC_To_Bytes
+from Part1_Classic_Protocols.Tools.GET_MAC import get_mac_address
+from Part1_Classic_Protocols.Tools.Change_Chaddr_To_MAC import Change_Chaddr_To_MAC
+from Part1_Classic_Protocols.Tools.Random_MAC import Random_MAC
+from DHCP_Discover import DHCP_Discover_Sendonly
+from DHCP_Request import DHCP_Request_Sendonly
 
 
 def DHCP_Monitor_Control(pkt):
     try:
         # if pkt.getlayer(DHCP).fields['options'][0][1]== 1:#发现并且打印DHCP Discover
         # print('发现DHCP Discover包，MAC地址为:',end='')
-        #	MAC_Bytes = pkt.getlayer(BOOTP).fields['chaddr']
-        #	MAC_ADDR = Change_Chaddr_To_MAC(MAC_Bytes)
-        #	print(MAC_ADDR)
-        #	print('Request包中发现如下Options:')
-        #	for option in pkt.getlayer(DHCP).fields['options']:
+        # MAC_Bytes = pkt.getlayer(BOOTP).fields['chaddr']
+        # MAC_ADDR = Change_Chaddr_To_MAC(MAC_Bytes)
+        # print(MAC_ADDR)
+        # print('Request包中发现如下Options:')
+        # for option in pkt.getlayer(DHCP).fields['options']:
         #		if option == 'end':
         #			break
         #		print('%-15s ==> %s' %(str(option[0]),str(option[1])))
@@ -88,5 +88,5 @@ def DHCP_DoS(ifname):
 
 
 if __name__ == '__main__':
-    ifname = 'eno33554944'
+    ifname = 'ens33'
     DHCP_DoS(ifname)

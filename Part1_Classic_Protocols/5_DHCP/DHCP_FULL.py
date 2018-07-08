@@ -11,9 +11,9 @@ logging.getLogger("scapy.runtime").setLevel(logging.ERROR)  # 清除报错
 from scapy.all import *
 import multiprocessing
 import struct
-from PyQYT.Network.Tools.Change_MAC_To_Bytes import Change_MAC_To_Bytes
-from PyQYT.Network.Tools.GET_MAC import GET_MAC
-from PyQYT.Network.Tools.Change_Chaddr_To_MAC import Change_Chaddr_To_MAC
+from Part1_Classic_Protocols.Tools.Change_MAC_To_Bytes import Change_MAC_To_Bytes
+from Part1_Classic_Protocols.Tools.GET_MAC import get_mac_address
+from Part1_Classic_Protocols.Tools.Change_Chaddr_To_MAC import Change_Chaddr_To_MAC
 from DHCP_Discover import DHCP_Discover_Sendonly
 from DHCP_Request import DHCP_Request_Sendonly
 
@@ -77,5 +77,4 @@ def DHCP_FULL(ifname, MAC, timeout=10):
 
 
 if __name__ == '__main__':
-    ifname = 'eno33554944'
-    DHCP_FULL('eno33554944', GET_MAC(ifname))
+    DHCP_FULL('ens33', get_mac_address('ens33'))

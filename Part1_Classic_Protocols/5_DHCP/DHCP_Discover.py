@@ -9,8 +9,8 @@ import logging
 
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)  # 清除报错
 from scapy.all import *
-from PyQYT.Network.Tools.GET_MAC import GET_MAC
-from PyQYT.Network.Tools.Change_MAC_To_Bytes import Change_MAC_To_Bytes
+from Part1_Classic_Protocols.Tools.GET_MAC import get_mac_address
+from Part1_Classic_Protocols.Tools.Change_MAC_To_Bytes import Change_MAC_To_Bytes
 import time
 
 
@@ -37,5 +37,5 @@ def DHCP_Discover_Sendonly(ifname, MAC, wait_time=1):
 
 
 if __name__ == '__main__':
-    Local_MAC = GET_MAC('ens33')
+    Local_MAC = get_mac_address('ens33')
     DHCP_Discover_Sendonly('ens33', Local_MAC)

@@ -4,22 +4,10 @@
 # 教主QQ:605658506
 # 亁颐堂官网www.qytang.com
 
-
-import sys
-
-sys.path.append('/usr/local/lib/python3.4/dist-packages/PyQYT/ExtentionPackages')
-sys.path.append('/usr/lib/python3.4/site-packages/PyQYT/ExtentionPackages')
-sys.path.append('../../ExtentionPackages')
-
-import logging
-
-logging.getLogger("scapy.runtime").setLevel(logging.ERROR)  # 清除报错
-from scapy.all import *
-import random
 import multiprocessing
 import time
-from PyQYT.Network.Tools.Random_MAC import Random_MAC
-from PyQYT.Network.DHCP.DHCP_Discover import DHCP_Discover_Sendonly
+from Part1_Classic_Protocols.Tools.Random_MAC import Random_MAC
+from DHCP_Discover import DHCP_Discover_Sendonly
 
 
 def DHCP_Discover_DoS(ifname):
@@ -41,4 +29,4 @@ def DHCP_Discover_DoS(ifname):
 
 
 if __name__ == '__main__':
-    DHCP_Discover_DoS('eno33554944')
+    DHCP_Discover_DoS('ens33')

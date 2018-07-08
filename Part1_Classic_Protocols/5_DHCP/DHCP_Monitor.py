@@ -9,7 +9,7 @@ import logging
 
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)  # 清除报错
 from scapy.all import *
-from PyQYT.Network.Tools.Change_Chaddr_To_MAC import Change_Chaddr_To_MAC
+from Part1_Classic_Protocols.Tools.Change_Chaddr_To_MAC import Change_Chaddr_To_MAC
 
 
 def DHCP_Monitor(pkt):
@@ -57,4 +57,4 @@ def DHCP_Sinffer(ifname):
 
 
 if __name__ == '__main__':
-    DHCP_Sinffer('eno33554944')
+    DHCP_Sinffer('ens33')
