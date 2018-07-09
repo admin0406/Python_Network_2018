@@ -105,7 +105,7 @@ def snmpv3_set(ip='', user='', hash_meth=None, hash_key=None, cry_meth=None, cry
 
 if __name__ == '__main__':
     # def snmpv3_set(ip='', user='', hash_meth=None, hash_key=None, cry_meth=None, cry_key=None, oid='', customerString=''):
-    snmpv3_set('10.1.1.253', 'snmpuser', 'md5', 'Cisc0123', 'des', 'Cisc0123', '1.3.6.1.2.1.2.2.1.10.1', 'QYTR1')
+    snmpv3_set('10.1.1.253', 'qytanguser', 'sha', 'Cisc0123', 'des', 'Cisc0123', '1.3.6.1.2.1.1.5.0', 'QYTR1')
     # try:
     #     ip = sys.argv[1]
     #     user = sys.argv[2]

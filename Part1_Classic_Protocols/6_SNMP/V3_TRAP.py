@@ -20,7 +20,7 @@ snmpEngine = engine.SnmpEngine()
 config.addSocketTransport(
     snmpEngine,
     udp.domainName,
-    udp.UdpTransport().openServerMode(('202.100.1.138', 162))
+    udp.UdpTransport().openServerMode(('10.1.1.80', 162))
 )
 
 #Callback function for receiving notifications
@@ -34,51 +34,27 @@ def cbFun(snmpEngine,
 #        )
 #    )
     for name, val in varBinds:
-#        print('%s = %s' % (name.prettyPrint(), val.prettyPrint()))
-        name = str(name)
-        val = str(val)
-        trapInfo = ''
-        Interface = ''
-#        print(name)
-#        print(val)
-        #============================Trap信息处理方法===================================
-        #interface up and down！
-        if '1.3.6.1.2.1.2.2.1.2' in name:
-            Interface = name
-            print('路由器接口:' + val, end = '', flush = True)
-        if '1.3.6.1.4.1.9.2.2.1.1.20' in name:
-            if re.match('.*down.*', val):
-                trapInfo = '接口 ' + Interface + '管理Down'
-                print(' 管理Down！')
-            elif re.match('.*up.*', val):
-                trapInfo = '接口 ' + Interface + '管理UP'
-                print(' 管理UP！')
-        #cpu util in last 5s, rising threshold
-        if '1.3.6.1.4.1.9.9.109.1.1.1.1.10.1' in name:
-            trapInfo = '过去5秒的CPU利用率是 ' + val + '%'
-            print('过去5秒的CPU利用率是 ' + val + '%')
-        #falling threshold
-#        elif '9.9.109.1.2.4.1.4.1.1' in name:
-#            trapInfo = 'CPU利用率已经低于 ' + val + '%'
-#            print('CPU利用率已经低于 ' + val + '%')
-        #ipsec tunnel start
-        elif '1.3.6.1.4.1.9.9.171.2.0.7' in val:
-            trapInfo = 'ipsec tunnel start'
-            print('ipsec tunnel start')
-        #ipsec tunnel stop
-        elif '1.3.6.1.4.1.9.9.171.2.0.8' in val:
-            trapInfo = 'ipsec tunnel stop'
-            print('ipsec tunnel stop')
-        #ipsla destination reachability inspection
-        elif '9.9.42.1.2.19.1.9.1' in name:
-            if '1' in val:
-                trapInfo = 'R2不可达!'
-                print('R2不可达!')
-            else:
-                trapInfo = 'R2可达!'
-                print('R2可达!')
-#        if trapInfo != '':
-#            sendTrapInfo(trapInfo)
+        print('%s = %s' % (name.prettyPrint(), val.prettyPrint()))
+        # ============================Trap 信息处理方法===================================
+
+        # ============================link up / link down===============================
+        if '1.3.6.1.6.3.1.1.4.1.0' in name.prettyPrint() and '1.3.6.1.6.3.1.1.5.3' in val.prettyPrint():
+            state = 'Down'
+        elif '1.3.6.1.6.3.1.1.4.1.0' in name.prettyPrint() and '1.3.6.1.6.3.1.1.5.4' in val.prettyPrint():
+                state = 'UP'
+
+        if '1.3.6.1.2.1.2.2.1.2.3' in name.prettyPrint():
+            print('*' * 20 + '接口状态' + '*' * 20)
+            print('%s change state to %s' % (val.prettyPrint(), state))
+        # ============================CPU================================================
+        if '1.3.6.1.4.1.9.9.41.1.2.3.1.4.' in name.prettyPrint():
+            if 'CPU' in val.prettyPrint():
+                cpu_state = val.prettyPrint()
+        elif '1.3.6.1.4.1.9.9.41.1.2.3.1.5.' in name.prettyPrint():
+            if 'CPU' in val.prettyPrint():
+                print('*'*20 + cpu_state + '*'*20)
+                print(val.prettyPrint())
+
 
 def snmpv3_trap(user='',hash_meth=None,hash_key=None,cry_meth=None,cry_key=None,engineid=''):
     #usmHMACMD5AuthProtocol - MD5 hashing
@@ -157,7 +133,7 @@ def snmpv3_trap(user='',hash_meth=None,hash_key=None,cry_meth=None,cry_key=None,
         raise
 
 if __name__ == '__main__':
-    snmpv3_trap('snmpuser', 'md5', 'Cisc0123', 'des', 'Cisc0123', '800000090300CA011B280000')
+    snmpv3_trap('qytanguser', 'sha', 'Cisc0123', 'des', 'Cisc0123', '800000090300005056AB4D19')
     # try:
     #     user = sys.argv[1]
     #     hm = sys.argv[2]

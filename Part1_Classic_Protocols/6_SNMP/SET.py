@@ -22,9 +22,9 @@ if errorIndication:
     print(errorIndication)
 elif errorStatus:
     print('%s at %s' % (
-        errorStatus.,
+        errorStatus.prettyPrint(),
         errorindex and varBinds[int(errorindex) - 1][0] or '?'
     )
           )
 for name, val in varBinds:
-    print('%s = %s' % (name., val.prettyPrint()))  # 打印修改的结果
+    print('%s = %s' % (name.prettyPrint(), val.prettyPrint()))  # 打印修改的结果

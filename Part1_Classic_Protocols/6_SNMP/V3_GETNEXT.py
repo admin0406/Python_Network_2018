@@ -103,7 +103,7 @@ def snmpv3_getnext(ip='',user='',hash_meth=None,hash_key=None,cry_meth=None,cry_
 
 if __name__ == '__main__':
     # def snmpv3_getnext(ip='',user='',hash_meth=None,hash_key=None,cry_meth=None,cry_key=None,oid='',num=1):
-    for item in snmpv3_getnext('10.1.1.253', 'snmpuser', 'md5', 'Cisc0123', 'des', 'Cisc0123', '1.3.6.1.2.1.2.2.1.10.1', 10):
+    for item in snmpv3_getnext('10.1.1.253', 'qytanguser', 'sha', 'Cisc0123', 'des', 'Cisc0123', '1.3.6.1.2.1.2.2.1.2', 10):
         print('OID: ', item[0], 'VALUE: ', item[1])#从oid_list读取并且打印信息
     # try:
     #     ip = sys.argv[1]#读取客户输入参数

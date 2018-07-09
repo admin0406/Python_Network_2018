@@ -118,9 +118,10 @@ def snmpv3_get(ip='', user='', hash_meth=None, hash_key=None, cry_meth=None, cry
 
 if __name__ == '__main__':
     #def snmpv3_get(ip='', user='', hash_meth=None, hash_key=None, cry_meth=None, cry_key=None, oid=''):
-    for item in snmpv3_get('10.1.1.253', 'snmpuser', 'md5', 'Cisc0123', 'des', 'Cisc0123', '1.3.6.1.2.1.2.2.1.10.1'):
+    for item in snmpv3_get('10.1.1.253', 'qytanguser', 'sha', 'Cisc0123', 'des', 'Cisc0123', '1.3.6.1.2.1.1.1.0'):
         print('OID: ', item[0], 'VALUE: ', item[1])  # 从oid_list读取并且打印信息
-
+    for item in snmpv3_get('10.1.1.253', 'qytanguser', 'sha', 'Cisc0123', 'des', 'Cisc0123', '1.3.6.1.2.1.1.5.0'):
+        print('OID: ', item[0], 'VALUE: ', item[1])  # 从oid_list读取并且打印信息
     # try:
     #     ip = sys.argv[1]  # 读取客户输入参数
     #     user = sys.argv[2]  # 读取客户输入参数

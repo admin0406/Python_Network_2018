@@ -16,8 +16,7 @@ errorIndication, errorStatus, errorindex, varBinds = next(
            UdpTransportTarget(('10.1.1.253', 161)),  # 配置目的地址和端口号
            ContextData(),
            ObjectType(ObjectIdentity('1.3.6.1.2.1.1.1.0')),  # 读取的OID
-           ObjectType(ObjectIdentity('1.3.6.1.2.1.1.5.0')),  # 读取的OID
-           ObjectType(ObjectIdentity('1.3.6.1.4.1.9.9.109.1.1.1.1.3.1'))
+           ObjectType(ObjectIdentity('1.3.6.1.2.1.1.5.0'))  # 读取的OID
            )
 )
 
@@ -25,7 +24,7 @@ if errorIndication:
     print(errorIndication)
 elif errorStatus:
     print('%s at %s' % (
-        errorStatus.,
+        errorStatus,
         errorindex and varBinds[int(errorindex) - 1][0] or '?'
     )
           )

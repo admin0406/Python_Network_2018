@@ -22,7 +22,7 @@ if errorIndication:
     print(errorIndication)
 elif errorStatus:
     print('%s at %s' % (
-        errorStatus.,
+        errorStatus.prettyPrint(),
         errorindex and varBinds[int(errorindex) - 1][0] or '?'
     )
           )
