@@ -34,10 +34,11 @@ def cbFun(snmpEngine,
 #        )
 #    )
     for name, val in varBinds:
-        print('%s = %s' % (name.prettyPrint(), val.prettyPrint()))
+        # print('%s = %s' % (name.prettyPrint(), val.prettyPrint()))
         # ============================Trap 信息处理方法===================================
 
         # ============================link up / link down===============================
+        # snmp-server enable traps snmp linkdown linkup
         if '1.3.6.1.6.3.1.1.4.1.0' in name.prettyPrint() and '1.3.6.1.6.3.1.1.5.3' in val.prettyPrint():
             state = 'Down'
         elif '1.3.6.1.6.3.1.1.4.1.0' in name.prettyPrint() and '1.3.6.1.6.3.1.1.5.4' in val.prettyPrint():
@@ -46,7 +47,19 @@ def cbFun(snmpEngine,
         if '1.3.6.1.2.1.2.2.1.2.3' in name.prettyPrint():
             print('*' * 20 + '接口状态' + '*' * 20)
             print('%s change state to %s' % (val.prettyPrint(), state))
+
+        # ============================Enter / Exit Configure Mode=========================
+        # snmp-server enable traps config
+        if '1.3.6.1.6.3.1.1.4.1.0' in name.prettyPrint():
+            if '1.3.6.1.4.1.9.9.43.2.0.1' in val.prettyPrint():
+                print('*' * 20 + '配置模式改变' + '*' * 20)
+                print('Enter Configure Mode!!!')
+            elif '1.3.6.1.4.1.9.9.43.2.0.2' in val.prettyPrint():
+                print('*' * 20 + '配置模式改变' + '*' * 20)
+                print('Exit Configure Mode!!!')
+
         # ============================CPU================================================
+        # IOS-XE 现在并不能主动发送Trap,但是激活snmp-server enable traps syslog,可以把Console log发过去
         if '1.3.6.1.4.1.9.9.41.1.2.3.1.4.' in name.prettyPrint():
             if 'CPU' in val.prettyPrint():
                 cpu_state = val.prettyPrint()
