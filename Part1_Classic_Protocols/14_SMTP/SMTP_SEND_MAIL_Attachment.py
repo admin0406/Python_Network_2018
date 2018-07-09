@@ -32,7 +32,7 @@ def qyt_smtp_attachment(mailserver, username, password, From, To, Subj, Main_Bod
             part.add_header('Content-Disposition', 'attachment', filename=file)
             msg.attach(part)
 
-    server = smtplib.SMTP(mailserver)  # 连接邮件服务器
+    server = smtplib.SMTP_SSL(mailserver,465)  # 连接邮件服务器
     server.login(username, password)  # 通过用户名和密码登录邮件服务器
     failed = server.sendmail(From, Tos, msg.as_string())  # 发送邮件
     server.quit()  # 退出会话
@@ -49,7 +49,7 @@ if __name__ == '__main__':
                         '3348326959@qq.com',
                         'mygmsrdptfuwcjbh',
                         '3348326959@qq.com',
-                        'collinsctk@qytang.com',
+                        '3348326959@qq.com;collinsctk@qytang.com',
                         '附件测试_主题',
                         '附件测试_正文',
                         ['Logo.jpg'])

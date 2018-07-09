@@ -16,7 +16,7 @@ def qyt_smtp_sendmail(mailserver, username, password, From, To, Subj):
     # print(Date)
     text = ('From: %s\nTo: %s\nData: %s\nSubject: %s\n\n' % (From, To, Date, Subj))
     # print(text)
-    server = smtplib.SMTP(mailserver)  # 连接邮件服务器
+    server = smtplib.SMTP_SSL(mailserver,465)  # 连接邮件服务器
     server.login(username, password)  # 通过用户名和密码登录邮件服务器
     failed = server.sendmail(From, Tos, text)  # 发送邮件
     server.quit()  # 退出会话
@@ -29,7 +29,7 @@ def qyt_smtp_sendmail(mailserver, username, password, From, To, Subj):
 
 if __name__ == '__main__':
     qyt_smtp_sendmail('smtp.qq.com', '3348326959@qq.com', 'mygmsrdptfuwcjbh', '3348326959@qq.com',
-                       'collinsctk@qytang.com', 'This is a text only mail')
+                       '3348326959@qq.com;collinsctk@qytang.com', 'This is a text only mail')
     # import getpass
     #
     # username = input('请输入用户名: ')
