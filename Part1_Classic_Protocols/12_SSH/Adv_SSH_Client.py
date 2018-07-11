@@ -34,4 +34,5 @@ def QYT_SSHClient_MultiCMD(ip, username, password, cmd_list):
 
 
 if __name__ == '__main__':
-    QYT_SSHClient_MultiCMD('10.1.1.253', 'admin', 'Cisc0123', ['term length 0', 'show ver', 'show ip inter brie'])
+    # QYT_SSHClient_MultiCMD('10.1.1.253', 'admin', 'Cisc0123', ['term length 0', 'show ver', 'show ip inter brie'])
+    QYT_SSHClient_MultiCMD('2001:1::253', 'admin', 'Cisc0123', ['term length 0', 'show ver', 'show ip inter brie'])

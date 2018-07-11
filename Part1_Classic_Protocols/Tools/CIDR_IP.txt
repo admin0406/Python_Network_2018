@@ -2,7 +2,7 @@
 #创建CIDR网络
 >>> net = ipaddress.ip_network('202.100.1.64/27')
 >>> net
-IPv4Network('202.100.1.64/27')
+IPv4Network('202.100.1.64/27') # net  = ipaddress.ip_network('2001:1::0/120')
 #打印网络中的IP地址
 >>> for a in net:
 ...  print(a)
