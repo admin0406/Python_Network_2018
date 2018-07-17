@@ -10,13 +10,13 @@ import logging
 
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)  # 清除报错
 from scapy.all import *
-from Part1_Classic_Protocols.Tools.GET_IP_IFCONFIG import get_ip_address_ifconfig  # 获取本机IP地址
-from Part1_Classic_Protocols.Tools.GET_MAC import get_mac_address  # 获取本机MAC地址
+from Tools.GET_IP_netifaces import get_ip_address  # 获取本机IP地址
+from Tools.GET_MAC_netifaces import get_mac_address  # 获取本机MAC地址
 
 
 def arp_request(ip_address, ifname='ens33'):
     # 获取本机IP地址
-    localip = get_ip_address_ifconfig(ifname)['ip_address']
+    localip = get_ip_address(ifname)
     # 获取本机MAC地址
     localmac = get_mac_address(ifname)
     try:  # 发送ARP请求并等待响应
@@ -39,4 +39,5 @@ def arp_request(ip_address, ifname='ens33'):
 
 if __name__ == "__main__":
     # 使用Linux解释器
-    print(arp_request('10.1.1.254'))
+    arp_result = arp_request('10.1.1.254')
+    print("IP地址:", arp_result[0], "MAC地址:", arp_result[1])

