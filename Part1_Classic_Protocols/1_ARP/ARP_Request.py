@@ -24,9 +24,9 @@ def arp_request(ip_address, ifname='ens33'):
                          ARP(op=1,
                              hwsrc=localmac, hwdst='00:00:00:00:00:00',
                              psrc=localip, pdst=ip_address),
-                         iface=ifname,
-                         timeout=1,
-                         verbose=False)
+                             #iface=ifname,  # windows 环境需要去掉
+                             timeout=1,
+                             verbose=False)
         # 把响应的数据包对，产生为清单
         result_list = result_raw[0].res
         # [0]第一组响应数据包
@@ -38,6 +38,6 @@ def arp_request(ip_address, ifname='ens33'):
 
 
 if __name__ == "__main__":
-    # 使用Linux解释器
-    arp_result = arp_request('10.1.1.254')
+    # Windows Linux均可使用
+    arp_result = arp_request('10.1.1.254', "ens33")
     print("IP地址:", arp_result[0], "MAC地址:", arp_result[1])

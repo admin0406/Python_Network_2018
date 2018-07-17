@@ -28,6 +28,6 @@ def scapy_ping_one(host):
 
 
 if __name__ == '__main__':
-    # 使用Linux解释器
+    # Windows Linux均可使用
     print(scapy_ping_one("10.1.1.253"))
     # print(scapy_ping_one(sys.argv[1]))

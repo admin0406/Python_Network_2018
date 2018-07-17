@@ -53,5 +53,5 @@ def qyt_ping(dst):
 
 
 if __name__ == '__main__':
-    # 使用Linux解释器
+    # Windows Linux均可使用
     qyt_ping('10.1.1.254')
