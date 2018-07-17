@@ -15,22 +15,27 @@ import time
 
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)  # 清除报错
 from scapy.all import *
-from Part1_Classic_Protocols.Tools.GET_MAC import get_mac_address
+from Tools.GET_MAC import get_mac_address
 
-ll_mac = get_mac_address('ens33')
 
-base=IPv6(dst='ff02::1')
-router_solicitation=ICMPv6ND_RA()
-src_ll_addr=ICMPv6NDOptSrcLLAddr(lladdr=ll_mac)
-mtu = ICMPv6NDOptMTU(mtu=150)
-prefix=ICMPv6NDOptPrefixInfo(prefix='2001:2::', prefixlen=64)
-packet=base/router_solicitation/src_ll_addr/mtu/prefix
+def icmpv6_ra():
+    ll_mac = get_mac_address('ens33')
+    base = IPv6(dst='ff02::1')
+    router_solicitation = ICMPv6ND_RA()
+    src_ll_addr = ICMPv6NDOptSrcLLAddr(lladdr=ll_mac)
+    mtu = ICMPv6NDOptMTU(mtu=150)
+    prefix = ICMPv6NDOptPrefixInfo(prefix='2001:2::', prefixlen=64)
+    packet = base / router_solicitation / src_ll_addr / mtu / prefix
 
-packet.show()
-while True:
-    time.sleep(1)
-    send(packet)
+    #packet.show()
+    while True:
+        try:
+            time.sleep(1)
+            send(packet, verbose=False)
+            print('发送RA数据包')
+        except KeyboardInterrupt:
+            print('退出!')
 
 
 if __name__ == '__main__':
-    pass
+    icmpv6_ra()

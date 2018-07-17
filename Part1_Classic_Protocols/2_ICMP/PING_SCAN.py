@@ -10,7 +10,7 @@
 import logging
 
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
-import multiprocessing
+from multiprocessing.pool import ThreadPool
 from PING_ONE import scapy_ping_one
 from scapy.all import *
 from Tools.SORT_IP import sort_ip
@@ -21,7 +21,7 @@ def scapy_ping_scan(network):
     ip_list = []
     for ip in net:
         ip_list.append(str(ip))  # 把IP地址放入ip_list的清单
-    pool = multiprocessing.Pool(processes=100)  # 创建多进程的进程池（并发为100）
+    pool = ThreadPool(processes=10)  # 创建多进程的进程池（并发为10）
     result = pool.map(scapy_ping_one, ip_list)  # 关联函数与参数，并且提取结果到result
     pool.close()  # 关闭pool，不在加入新的进程
     pool.join()  # 等待每一个进程结束
@@ -33,7 +33,7 @@ def scapy_ping_scan(network):
 
 
 if __name__ == '__main__':
-    # 使用Linux解释器
+    # Windows Linux均可使用
     import time
 
     t1 = time.time()

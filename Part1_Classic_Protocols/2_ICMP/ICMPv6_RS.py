@@ -14,19 +14,22 @@ import logging
 
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)  # 清除报错
 from scapy.all import *
-from Part1_Classic_Protocols.Tools.GET_MAC import get_mac_address
-
-ll_mac = get_mac_address('ens33')
-
-base=IPv6(dst='ff02::2')
-router_solicitation=ICMPv6ND_RS()
-src_ll_addr=ICMPv6NDOptSrcLLAddr(lladdr=ll_mac)
-packet=base/router_solicitation/src_ll_addr
-packet.show()
-result = sr1(packet)
-result.show()
+from Tools.GET_MAC import get_mac_address
 
 
+def icmpv6_rs():
+    ll_mac = get_mac_address('ens33')
+
+    base = IPv6(dst='ff02::2')
+    router_solicitation = ICMPv6ND_RS()
+    src_ll_addr = ICMPv6NDOptSrcLLAddr(lladdr=ll_mac)
+    packet = base / router_solicitation / src_ll_addr
+    # packet.show()
+    result = sr1(packet, timeout=2, verbose=False)
+    #result.show()
+    print("gwmac: ", result.getlayer("ICMPv6 Neighbor Discovery Option - Source Link-Layer Address").fields['lladdr'])
+    print("mtu: ", result.getlayer("ICMPv6 Neighbor Discovery Option - MTU").fields['mtu'])
+    print("prefix: ", result.getlayer("ICMPv6 Neighbor Discovery Option - Prefix Information").fields['prefix'])
 
 if __name__ == '__main__':
-    pass
+    icmpv6_rs()

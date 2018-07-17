@@ -14,19 +14,21 @@ import logging
 
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)  # 清除报错
 from scapy.all import *
-from Part1_Classic_Protocols.Tools.GET_MAC import get_mac_address
+from Tools.GET_MAC_netifaces import get_mac_address
+from Tools.IPv6_IP_TO_MAC import Solicited_node_multicast_address
 
-ll_mac = get_mac_address('ens33')
 
-base=IPv6(dst='FF02::1:FF00:200')
-neighbor_solicitation=ICMPv6ND_NS(tgt="2001:1::200")
-src_ll_addr=ICMPv6NDOptSrcLLAddr(lladdr=ll_mac)
-packet=base/neighbor_solicitation/src_ll_addr
-packet.show()
-result = sr1(packet,timeout=2)
-result.show()
+# Windows 查看IPv6邻居 netsh int ipv6 show neigh
+# IOS     查看IPv6邻居 show ipv6 neighbors
+# Linux   查看IPv6邻居 ip -6 neigh                 | ping6 2001:1::200
 
+def icmpv6_ns(host, ifname):
+    ll_mac = get_mac_address(ifname)
+    packet = IPv6(dst=Solicited_node_multicast_address(host)) / ICMPv6ND_NS(tgt=host) / ICMPv6NDOptSrcLLAddr(
+        lladdr=ll_mac)
+    result = sr1(packet, timeout=2, verbose=False)
+    return result.getlayer("ICMPv6 Neighbor Discovery Option - Destination Link-Layer Address").fields['lladdr']
 
 
 if __name__ == '__main__':
-    pass
+    print(icmpv6_ns("2001:1::253", 'ens33'))

