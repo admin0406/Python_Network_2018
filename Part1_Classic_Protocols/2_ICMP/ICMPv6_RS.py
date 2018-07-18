@@ -26,10 +26,11 @@ def icmpv6_rs():
     packet = base / router_solicitation / src_ll_addr
     # packet.show()
     result = sr1(packet, timeout=2, verbose=False)
-    #result.show()
+    # result.show()
     print("gwmac: ", result.getlayer("ICMPv6 Neighbor Discovery Option - Source Link-Layer Address").fields['lladdr'])
     print("mtu: ", result.getlayer("ICMPv6 Neighbor Discovery Option - MTU").fields['mtu'])
     print("prefix: ", result.getlayer("ICMPv6 Neighbor Discovery Option - Prefix Information").fields['prefix'])
+
 
 if __name__ == '__main__':
     icmpv6_rs()

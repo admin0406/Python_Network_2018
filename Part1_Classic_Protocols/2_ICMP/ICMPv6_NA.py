@@ -19,7 +19,7 @@ from Tools.GET_MAC_netifaces import get_mac_address
 from ICMPv6_NS import icmpv6_ns
 
 
-def icmpv6_na(spoofhost, dsthost, ifname):
+def icmpv6_na(spoofhost, dsthost, ifname):  # 发送NA主要用于毒化
     ll_mac = get_mac_address(ifname)
     ether = Ether(dst=icmpv6_ns(dsthost, ifname))
     base = IPv6(src=spoofhost, dst=dsthost)

@@ -15,18 +15,21 @@ import logging
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)  # 清除报错
 from scapy.all import *
 from Tools.GET_MAC_netifaces import get_mac_address
-from Tools.IPv6_IP_TO_MAC import Solicited_node_multicast_address
+from Tools.IPv6_Tools import Solicited_node_multicast_address
 
 
 # Windows 查看IPv6邻居 netsh int ipv6 show neigh
 # IOS     查看IPv6邻居 show ipv6 neighbors
 # Linux   查看IPv6邻居 ip -6 neigh                 | ping6 2001:1::200
 
-def icmpv6_ns(host, ifname):
-    ll_mac = get_mac_address(ifname)
+def icmpv6_ns(host, ifname):  # 请求特定IPv6地址的MAC地址
+    ll_mac = get_mac_address(ifname)  # 获取本机接口MAC地址
+    # 构建icmpv6_ns数据包
     packet = IPv6(dst=Solicited_node_multicast_address(host)) / ICMPv6ND_NS(tgt=host) / ICMPv6NDOptSrcLLAddr(
         lladdr=ll_mac)
+    # 发送数据包
     result = sr1(packet, timeout=2, verbose=False)
+    # 提取返回的MAC地址
     return result.getlayer("ICMPv6 Neighbor Discovery Option - Destination Link-Layer Address").fields['lladdr']
 
 
