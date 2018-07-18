@@ -40,4 +40,5 @@ def scapy_pingv6_one(host):
 
 
 if __name__ == '__main__':
+    # Windows Linux均可使用
     print(scapy_pingv6_one('2001:1::253'))

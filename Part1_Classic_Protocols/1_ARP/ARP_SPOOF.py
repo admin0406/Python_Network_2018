@@ -62,7 +62,7 @@ def sigint_handler(signum, frame):  # 定义处理方法
 
 if __name__ == "__main__":
     # Windows Linux均可使用
-    arp_spoof('10.1.1.253', '10.1.1.200', 'ens33') # 欺骗10.1.1.253 让它认为10.1.1.200的MAC地址为本地攻击者计算机的MAC
+    arp_spoof('10.1.1.253', '10.1.1.200', 'Net1') # 欺骗10.1.1.253 让它认为10.1.1.200的MAC地址为本地攻击者计算机的MAC
     # from optparse import OptionParser
     # usage = "usage: ./scapy_arp_spoof 被欺骗主机IP 伪装主机的IP -i interface"
     # version = "version 1.0"
