@@ -16,19 +16,10 @@ logging.getLogger("scapy.runtime").setLevel(logging.ERROR)  # 清除报错
 from scapy.all import *
 
 
-# payload = "Welcome to qytang!!!" * 10
-# base=IPv6(dst='2001:1::253')
-# extension=ICMPv6EchoRequest(data=payload)
-# packet = base/extension
-# result =sr1(packet)
-# result.show()
-
 def scapy_pingv6_one(host):
     packet = IPv6(dst=host) / ICMPv6EchoRequest(data="Welcome to qytang!!!" * 10)  # 构造Ping数据包
     ping = sr1(packet, timeout=1, verbose=False)  # 获取响应信息，超时为2秒，关闭详细信息
-    # ping.show()
-    # print(ping.getlayer(IPv6).fields)
-    # print(ping.getlayer("ICMPv6 Echo Reply").fields)
+
     try:
         if ping.getlayer(IPv6).fields['src'] == host and ping.getlayer("ICMPv6 Echo Reply").fields['type'] == 129:
             # 如果收到目的返回的ICMP ECHO-Reply包
