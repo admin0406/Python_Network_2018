@@ -6,16 +6,20 @@
 # 教主技术进化论拓展你的技术新边疆
 # https://ke.qq.com/course/271956?tuin=24199d8a
 
-
 import socket
 
-address = ('10.1.1.80', 6666)
+address = ("10.1.1.100", 6666)
+# 创建UDP套接字Socket
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 while True:
-    msg = input()
+    # 收集客户输入数据
+    msg = input('请输入数据:')
+    # 如果客户输入为空,发送空数据,并且退出
     if not msg:
+        s.sendto(msg.encode(), address)
         break
+    # 如果客户输入不为空,发送数据
     s.sendto(msg.encode(), address)
 
 s.close()
