@@ -10,6 +10,13 @@
 # https://www.idsv6.de/Downloads/IPv6PacketCreationWithScapy.pdf
 # https://www.ernw.de/download/Advanced%20Attack%20Techniques%20against%20IPv6%20Networks-final.pdf
 
+# 微软默认并不使用EUI64地址,而是随机产生
+# https://www.dan.me.uk/blog/2011/02/10/windows-7-ipv6-auto-assignment-fix/
+# netsh interface ipv6 set privacy state=disabled store=active
+# netsh interface ipv6 set privacy state=disabled store=persistent
+# netsh interface ipv6 set global randomizeidentifiers=disabled store=active
+# netsh interface ipv6 set global randomizeidentifiers=disabled store=persistent
+
 import logging
 
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)  # 清除报错
@@ -37,7 +44,7 @@ def icmpv6_rs(ifname):
     # packet.show()
     # 发送数据包,接受返回数据包
     result = sr1(packet, timeout=2, verbose=False)
-    # result.show()
+    result.show()
     # 提取返回数据包中的网关MAC
     print("gwmac: ", result.getlayer("ICMPv6 Neighbor Discovery Option - Source Link-Layer Address").fields['lladdr'])
     # 提取返回数据包中的MTU

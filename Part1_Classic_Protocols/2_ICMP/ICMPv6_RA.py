@@ -35,7 +35,7 @@ def icmpv6_ra(ifname):
     # 源地址: 00:50:56:AB:4D:19(路由器MAC地址),本次为欺骗,所以MAC地址是本地MAC地址
     src_ll_addr = ICMPv6NDOptSrcLLAddr(lladdr=ll_mac)
     # 提供MTU
-    mtu = ICMPv6NDOptMTU(mtu=150)
+    mtu = ICMPv6NDOptMTU(mtu=1500)
     # 提供前缀
     prefix = ICMPv6NDOptPrefixInfo(prefix='2001:4::', prefixlen=64)
     # 构建数据包
