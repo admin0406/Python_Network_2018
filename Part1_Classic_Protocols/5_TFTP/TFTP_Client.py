@@ -7,7 +7,7 @@
 # https://ke.qq.com/course/271956?tuin=24199d8a
 
 
-from Part1_Classic_Protocols.Tools.minimumTFTP import Client
+from Tools.minimumTFTP import Client
 
 
 def qyt_ftpclient(server, filedir, file, operation=1):
@@ -20,8 +20,9 @@ def qyt_ftpclient(server, filedir, file, operation=1):
 
 
 if __name__ == '__main__':
-    # 使用Linux解释器
+    # 使用Linux解释器 & WIN解释器
     # 正常安装有问题,需要把minimumTFTP.py文件放入如下的路径
-    # /usr/local/lib/python3.6/site-packages/minimumTFTP/minimumTFTP.py
-    qyt_ftpclient('10.1.1.80', '.', 'testupload.txt', operation=1)
-    # qyt_ftpclient('10.1.1.80', '.', 'testupload.txt', operation=2)
+    # /usr/local/lib/python3.6/site-packages/Tools/minimumTFTP.py
+
+    qyt_ftpclient('10.1.1.100', '.', 'testupload.txt', operation=1)
+    # qyt_ftpclient('10.1.1.100', '.', 'testupload.txt', operation=2)
