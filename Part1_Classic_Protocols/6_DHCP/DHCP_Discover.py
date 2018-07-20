@@ -11,9 +11,29 @@ import logging
 
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)  # 清除报错
 from scapy.all import *
-from Part1_Classic_Protocols.Tools.GET_MAC import get_mac_address
-from Part1_Classic_Protocols.Tools.Change_MAC_To_Bytes import Change_MAC_To_Bytes
+from Tools.GET_MAC_netifaces import get_mac_address
+from Tools.Change_MAC_To_Bytes import Change_MAC_To_Bytes
 import time
+import struct
+# Dynamic Host Configuration Protocol (DHCP) and Bootstrap Protocol (BOOTP) Parameters
+# https://www.iana.org/assignments/bootp-dhcp-parameters/bootp-dhcp-parameters.xhtml
+requested_option_1 = 1   # Subnet Mask
+requested_option_2 = 6   # Domain Name Servers
+requested_option_3 = 15  # Domain Name
+requested_option_4 = 44  # NetBIOS (TCP/IP) Name Servers
+requested_option_5 = 3   # Routers
+requested_option_6 = 33  # Static Routes
+requested_option_7 = 150 # TFTP Server address
+requested_option_8 = 43  # Vendor Specific Information
+
+bytes_requested_options = struct.pack("8B", requested_option_1,
+                                            requested_option_2,
+                                            requested_option_3,
+                                            requested_option_4,
+                                            requested_option_5,
+                                            requested_option_6,
+                                            requested_option_8,
+                                            requested_option_7)
 
 
 def DHCP_Discover_Sendonly(ifname, MAC, wait_time=1):
@@ -26,18 +46,23 @@ def DHCP_Discover_Sendonly(ifname, MAC, wait_time=1):
                                                                              dst='255.255.255.255') / UDP(dport=67,
                                                                                                           sport=68) / BOOTP(
             op=1, chaddr=Bytes_MAC + b'\x00' * 10) / DHCP(
-            options=[('message-type', 'discover'), ('param_req_list', b'\x01\x06\x0f,\x03!\x96+'), ('end')])
-        sendp(discover, iface=ifname, verbose=False)
+            options=[('message-type', 'discover'), ('param_req_list', bytes_requested_options), ('end')])
+        sendp(discover,
+              # iface=ifname, # Windows环境取消iface选项
+              verbose=False)
     else:
         Bytes_MAC = Change_MAC_To_Bytes(MAC)
         discover = Ether(dst='ff:ff:ff:ff:ff:ff', src=MAC, type=0x0800) / IP(src='0.0.0.0',
                                                                              dst='255.255.255.255') / UDP(dport=67,
                                                                                                           sport=68) / BOOTP(
             op=1, chaddr=Bytes_MAC + b'\x00' * 10) / DHCP(
-            options=[('message-type', 'discover'), ('param_req_list', b'\x01\x06\x0f,\x03!\x96+'), ('end')])
-        sendp(discover, iface=ifname, verbose=False)
+            options=[('message-type', 'discover'), ('param_req_list', bytes_requested_options), ('end')])
+        sendp(discover,
+              # iface=ifname, # Windows环境取消iface选项
+              verbose=False)
 
 
 if __name__ == '__main__':
+    # 使用Linux解释器 & WIN解释器
     Local_MAC = get_mac_address('ens33')
     DHCP_Discover_Sendonly('ens33', Local_MAC)
