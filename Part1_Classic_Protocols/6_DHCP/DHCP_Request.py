@@ -12,30 +12,55 @@ import logging
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)  # 清除报错
 from scapy.all import *
 import time
+from DHCP_Discover import chaddr
+
+# Dynamic Host Configuration Protocol (DHCP) and Bootstrap Protocol (BOOTP) Parameters
+# https://www.iana.org/assignments/bootp-dhcp-parameters/bootp-dhcp-parameters.xhtml
+requested_option_1 = 1   # Subnet Mask
+requested_option_2 = 6   # Domain Name Servers
+requested_option_3 = 15  # Domain Name
+requested_option_4 = 44  # NetBIOS (TCP/IP) Name Servers
+requested_option_5 = 3   # Routers
+requested_option_6 = 33  # Static Routes
+requested_option_7 = 150 # TFTP Server address
+requested_option_8 = 43  # Vendor Specific Information
+
+bytes_requested_options = struct.pack("8B", requested_option_1,
+                                            requested_option_2,
+                                            requested_option_3,
+                                            requested_option_4,
+                                            requested_option_5,
+                                            requested_option_6,
+                                            requested_option_8,
+                                            requested_option_7)
 
 
-def DHCP_Request_Sendonly(ifname, options, wait_time=1):
+def DHCP_Request_Sendonly(ifname, options, param_req_list, wait_time=1):
     request = Ether(dst='ff:ff:ff:ff:ff:ff',
                     src=options['MAC'],
                     type=0x0800) / IP(src='0.0.0.0',
                                       dst='255.255.255.255') / UDP(dport=67, sport=68) / BOOTP(op=1,
-                                                                                               chaddr=options[
-                                                                                                          'client_id'] + b'\x00' * 10,
-                                                                                               siaddr=options[
-                                                                                                   'Server_IP'], ) / DHCP(
-        options=[('message-type', 'request'),
-                 ('server_id', options['Server_IP']),
-                 ('requested_addr', options['requested_addr']),
-                 ('client_id', b'\x01' + options['client_id']),
-                 ('param_req_list', b'\x01\x06\x0f,\x03!\x96+'), ('end')])
+                                                                                               chaddr=chaddr(options['client_id']),
+                                                                                               siaddr=options['Server_IP'], ) / DHCP(options=[('message-type', 'request'),
+                                                                                                                                              ('server_id', options['Server_IP']),
+                                                                                                                                              ('requested_addr', options['requested_addr']),
+                                                                                                                                              # Hardware_Type = 1(一个字节),需要添加在client_id前面
+                                                                                                                                              ('client_id', b'\x01' + options['client_id']),
+                                                                                                                                              ('param_req_list', param_req_list),
+                                                                                                                                              ('end')])
     if wait_time != 0:
         time.sleep(wait_time)
-        sendp(request, iface=ifname, verbose=False)
+        sendp(request,
+              # iface=ifname, # Windows环境取消iface选项
+              verbose=False)
     else:
-        sendp(request, iface=ifname, verbose=False)
+        sendp(request,
+              # iface=ifname, # Windows环境取消iface选项
+              verbose=False)
 
 
 if __name__ == '__main__':
+    # 使用Linux解释器 & WIN解释器
     options = {'MAC': '00:0c:29:8d:5c:b6', 'Server_IP': '202.100.1.168', 'requested_addr': '202.100.1.1',
                'client_id': b'\x00\x0c)\x8d\\\xb6'}
-    DHCP_Request_Sendonly('ens33', options)
+    DHCP_Request_Sendonly('ens33', options, bytes_requested_options)

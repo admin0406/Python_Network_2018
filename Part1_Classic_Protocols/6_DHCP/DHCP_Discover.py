@@ -36,27 +36,32 @@ bytes_requested_options = struct.pack("8B", requested_option_1,
                                             requested_option_7)
 
 
+def chaddr(info):
+    # chaddr一共16个字节，正常的chaddr信息里边只有MAC地址,思科比较特殊
+    # MAC地址只有6个字节，所以需要把剩余部分填充b'\x00'
+    return info + b'\x00' * (16 - len(info))
+
+
 def DHCP_Discover_Sendonly(ifname, MAC, wait_time=1):
+    Bytes_MAC = Change_MAC_To_Bytes(MAC)  # 把MAC地址转换为二进制格式
+    # param_req_list为请求的参数，没有这个部分服务器只会回送IP地址，什么参数都不给
+    discover = Ether(dst='ff:ff:ff:ff:ff:ff',
+                     src=MAC,
+                     type=0x0800) / IP(src='0.0.0.0',
+                                       dst='255.255.255.255') / UDP(dport=67,
+                                                                    sport=68) / BOOTP(op=1,
+                                                                                      chaddr=chaddr(Bytes_MAC)) / DHCP(
+                                                                                                                        options=[('message-type', 'discover'),
+                                                                                                                                 ('param_req_list',
+                                                                                                                                  bytes_requested_options),
+                                                                                                                                 ('end')])
+
     if wait_time != 0:
         time.sleep(wait_time)
-        Bytes_MAC = Change_MAC_To_Bytes(MAC)  # 把MAC地址转换为二进制格式
-        # chaddr一共16个字节，MAC地址只有6个字节，所以需要b'\x00'*10填充到16个字节
-        # param_req_list为请求的参数，没有这个部分服务器只会回送IP地址，什么参数都不给
-        discover = Ether(dst='ff:ff:ff:ff:ff:ff', src=MAC, type=0x0800) / IP(src='0.0.0.0',
-                                                                             dst='255.255.255.255') / UDP(dport=67,
-                                                                                                          sport=68) / BOOTP(
-            op=1, chaddr=Bytes_MAC + b'\x00' * 10) / DHCP(
-            options=[('message-type', 'discover'), ('param_req_list', bytes_requested_options), ('end')])
         sendp(discover,
               # iface=ifname, # Windows环境取消iface选项
               verbose=False)
     else:
-        Bytes_MAC = Change_MAC_To_Bytes(MAC)
-        discover = Ether(dst='ff:ff:ff:ff:ff:ff', src=MAC, type=0x0800) / IP(src='0.0.0.0',
-                                                                             dst='255.255.255.255') / UDP(dport=67,
-                                                                                                          sport=68) / BOOTP(
-            op=1, chaddr=Bytes_MAC + b'\x00' * 10) / DHCP(
-            options=[('message-type', 'discover'), ('param_req_list', bytes_requested_options), ('end')])
         sendp(discover,
               # iface=ifname, # Windows环境取消iface选项
               verbose=False)
@@ -64,5 +69,5 @@ def DHCP_Discover_Sendonly(ifname, MAC, wait_time=1):
 
 if __name__ == '__main__':
     # 使用Linux解释器 & WIN解释器
-    Local_MAC = get_mac_address('ens33')
-    DHCP_Discover_Sendonly('ens33', Local_MAC)
+    Local_MAC = get_mac_address('Net1')
+    DHCP_Discover_Sendonly('Net1', Local_MAC)
