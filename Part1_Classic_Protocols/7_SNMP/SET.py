@@ -10,21 +10,28 @@
 from pysnmp.entity.rfc3413.oneliner import cmdgen
 from pysnmp.proto import rfc1902
 
-cmdGen = cmdgen.CommandGenerator()
 
-errorIndication, errorStatus, errorindex, varBinds = cmdGen.setCmd(
-    cmdgen.CommunityData('qytangrw'),  # 写入Community
-    cmdgen.UdpTransportTarget(('10.1.1.253', 161)),  # IP地址和端口号
-    ('1.3.6.1.2.1.1.5.0', rfc1902.OctetString('SNMPv2R1'))  # OID和写入的内容，需要进行编码！
-)
+def snmpv2_set(ip, community, oid, value, port=161):
+    cmdGen = cmdgen.CommandGenerator()
 
-if errorIndication:
-    print(errorIndication)
-elif errorStatus:
-    print('%s at %s' % (
-        errorStatus.prettyPrint(),
-        errorindex and varBinds[int(errorindex) - 1][0] or '?'
+    errorIndication, errorStatus, errorindex, varBinds = cmdGen.setCmd(
+        cmdgen.CommunityData(community),  # 写入Community
+        cmdgen.UdpTransportTarget((ip, port)),  # IP地址和端口号
+        (oid, rfc1902.OctetString(value))  # OID和写入的内容，需要进行编码！
     )
-          )
-for name, val in varBinds:
-    print('%s = %s' % (name.prettyPrint(), val.prettyPrint()))  # 打印修改的结果
+
+    if errorIndication:
+        print(errorIndication)
+    elif errorStatus:
+        print('%s at %s' % (
+            errorStatus.prettyPrint(),
+            errorindex and varBinds[int(errorindex) - 1][0] or '?'
+        )
+              )
+    for name, val in varBinds:
+        print('%s = %s' % (name.prettyPrint(), val.prettyPrint()))  # 打印修改的结果
+
+
+if __name__ == "__main__":
+    # 使用Linux解释器 & WIN解释器
+    snmpv2_set("10.1.1.253", "tcpiprw", "1.3.6.1.2.1.1.5.0", "Python_Net_R1", port=161)

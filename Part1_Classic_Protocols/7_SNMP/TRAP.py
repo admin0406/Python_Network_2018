@@ -6,7 +6,7 @@
 # 教主技术进化论拓展你的技术新边疆
 # https://ke.qq.com/course/271956?tuin=24199d8a
 
-
+from Tools.GET_IP_netifaces import get_ip_address
 from pysnmp.carrier.asynsock.dispatch import AsynsockDispatcher
 from pysnmp.carrier.asynsock.dgram import udp, udp6
 from pyasn1.codec.ber import decoder
@@ -61,20 +61,27 @@ def cbFun(transportDispatcher, transportDomain, transportAddress, wholeMsg):  # 
     return wholeMsg
 
 
-transportDispatcher = AsynsockDispatcher()  # 创建实例
+def snmp_trap_receiver(ifname, port=162):
+    if_ip = get_ip_address(ifname)
+    transportDispatcher = AsynsockDispatcher()  # 创建实例
 
-transportDispatcher.registerRecvCbFun(cbFun)  # 调用处理Trap信息的函数
+    transportDispatcher.registerRecvCbFun(cbFun)  # 调用处理Trap信息的函数
 
-# UDP/IPv4
-transportDispatcher.registerTransport(
-    udp.domainName, udp.UdpSocketTransport().openServerMode(('10.1.1.80', 162))  # 绑定到本地地址与UDP/162号端口
-)
+    # UDP/IPv4
+    transportDispatcher.registerTransport(
+        udp.domainName, udp.UdpSocketTransport().openServerMode((if_ip, port))  # 绑定到本地地址与UDP/162号端口
+    )
 
-transportDispatcher.jobStarted(1)  # 开始工作
+    transportDispatcher.jobStarted(1)  # 开始工作
 
-try:
-    # Dispatcher will never finish as job#1 never reaches zero
-    transportDispatcher.runDispatcher()  # 运行
-except:
-    transportDispatcher.closeDispatcher()
-    raise
+    try:
+        # Dispatcher will never finish as job#1 never reaches zero
+        transportDispatcher.runDispatcher()  # 运行
+    except:
+        transportDispatcher.closeDispatcher()
+        raise
+
+
+if __name__ == "__main__":
+    # 使用Linux解释器 & WIN解释器
+    snmp_trap_receiver("ens33")
