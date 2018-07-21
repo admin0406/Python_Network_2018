@@ -24,12 +24,15 @@ config.addSocketTransport(snmpEngine, udp.domainName, udp.UdpSocketTransport().o
 # Error/response reciever
 def cbFun(sendRequestHandle, errorIndication, errorStatus, errorIndex, varBindTable, cbCtx):
     if errorIndication:
+        print("写入失败!!!")
         print(errorIndication)
     elif errorStatus:
+        print("写入失败!!!")
         print('%s at %s' % (errorStatus.prettyPrint(), errorIndex and varBindTable[-1][int(errorIndex) - 1] or '?'))
     else:
+        print("写入成功!!!")
         for oid, val in varBindTable:
-            print('%s = %s' % (oid.prettyPrint(), val.prettyPrint()))
+            print('%s = %s' % (oid.prettyPrint(), val.__bytes__()))
 
 
 def snmpv3_set(ip='', user='', hash_meth=None, hash_key=None, cry_meth=None, cry_key=None, oid='', customerString=''):
@@ -42,18 +45,18 @@ def snmpv3_set(ip='', user='', hash_meth=None, hash_key=None, cry_meth=None, cry
     # usmAesCfb192Protocol - AES encryption, 192-bit
     # usmAesCfb256Protocol - AES encryption, 256-bit
     # usmNoPrivProtocol - no encryption
-    hashval = None
-    cryval = None
-    model = None
 
+    # 添加目标，'yourDevice'(OID与处理方法），'my-creds'（用户，密码，安全模型），目的IP与端口号
     config.addTargetAddr(snmpEngine, 'yourDevice', udp.domainName, (ip, 161), 'my-creds')
+    # ========================下面的操作在判断安全模型==========================
     # NoAuthNoPriv
-    if hash_meth == None and cry_meth == None:
-        hashval = config.usmNoAuthProtocol
-        cryval = config.usmNoPrivProtocol
-        model = 'noAuthNoPriv'
+    if hash_meth is None and cry_meth is None:
+        hashval = config.usmNoAuthProtocol  # 配置HASH算法
+        cryval = config.usmNoPrivProtocol  # 配置加密算法
+        model = 'noAuthNoPriv'  # 配置安全模式
     # AuthNoPriv
-    elif hash_meth != None and cry_meth == None:
+    elif hash_meth is not None and cry_meth is None:
+        # 配置HASH算法
         if hash_meth == 'md5':
             hashval = config.usmHMACMD5AuthProtocol
         elif hash_meth == 'sha':
@@ -61,10 +64,11 @@ def snmpv3_set(ip='', user='', hash_meth=None, hash_key=None, cry_meth=None, cry
         else:
             print('哈希算法必须是md5 or sha!')
             return
-        cryval = config.usmNoPrivProtocol
-        model = 'authNoPriv'
+        cryval = config.usmNoPrivProtocol  # 配置加密算法
+        model = 'authNoPriv'  # 配置安全模式
     # AuthPriv
-    elif hash_meth != None and cry_meth != None:
+    elif hash_meth is not None and cry_meth is not None:
+        # 配置HASH算法
         if hash_meth == 'md5':
             hashval = config.usmHMACMD5AuthProtocol
         elif hash_meth == 'sha':
@@ -72,6 +76,7 @@ def snmpv3_set(ip='', user='', hash_meth=None, hash_key=None, cry_meth=None, cry
         else:
             print('哈希算法必须是md5 or sha!')
             return
+        # 配置加密算法
         if cry_meth == '3des':
             cryval = config.usm3DESEDEPrivProtocol
         elif cry_meth == 'des':
@@ -85,41 +90,24 @@ def snmpv3_set(ip='', user='', hash_meth=None, hash_key=None, cry_meth=None, cry
         else:
             print('加密算法必须是3des, des, aes128, aes192 or aes256 !')
             return
-        model = 'authPriv'
+        model = 'authPriv'  # 配置安全模式
     # 提供的参数不符合标准时给出提示
     else:
         print('三种USM: NoAuthNoPriv, AuthNoPriv, AuthPriv.。请选择其中一种。')
         return
-
+    # ========================判断安全模型结束==========================
+    # 添加用户与他的密钥
     config.addV3User(snmpEngine, user, hashval, hash_key, cryval, cry_key)
-    config.addTargetParams(snmpEngine, 'my-creds', user, model)
+    config.addTargetParams(snmpEngine, 'my-creds', user, model)  # 创建'my-creds',里边有用户和安全模型
 
     # Prepare and send a request message
-    cmdgen.SetCommandGenerator().sendReq(snmpEngine, 'yourDevice', ((oid, rfc1902.OctetString(customerString)),),
-                                         # oid与要设置的值
-                                         cbFun)
+    # 创建'yourDevice'，有OID和处理方法cbFun
+    cmdgen.SetCommandGenerator().sendReq(snmpEngine, 'yourDevice', ((oid, rfc1902.OctetString(customerString)),), cbFun)
 
     # Run I/O dispatcher which would send pending queries and process responses
-    snmpEngine.transportDispatcher.runDispatcher()
+    snmpEngine.transportDispatcher.runDispatcher()  # 运行实例
 
 
 if __name__ == '__main__':
-    # def snmpv3_set(ip='', user='', hash_meth=None, hash_key=None, cry_meth=None, cry_key=None, oid='', customerString=''):
+    # 使用Linux解释器 & WIN解释器
     snmpv3_set('10.1.1.253', 'qytanguser', 'sha', 'Cisc0123', 'des', 'Cisc0123', '1.3.6.1.2.1.1.5.0', 'QYTR1')
-    # try:
-    #     ip = sys.argv[1]
-    #     user = sys.argv[2]
-    #     hm = sys.argv[3]
-    #     hk = sys.argv[4]
-    #     cm = sys.argv[5]
-    #     ck = sys.argv[6]
-    #     oid = sys.argv[7]
-    #     customerString = sys.argv[8]
-    #     snmpv3_set(ip, user, hm, hk, cm, ck, oid, customerString)
-    # except:
-    #     print('参数设置应该如下:')
-    #     print('python3 myset.py IP地址 用户名 认证算法 认证密钥 加密算法 加密密钥 OID 赋值')
-    #     print('认证算法支持md5和sha')
-    #     print('加密算法支持3des, des, aes128, aes192, aes256')
-    #     print('例如：')
-    #     print('python3 myset.py 192.168.1.1 user1 sha Cisc0123 des Cisc0123 1.3.6.1.2.1.1.5.0 GNSR1')

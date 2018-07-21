@@ -10,7 +10,7 @@ from pysnmp.entity import engine, config
 from pysnmp.entity.rfc3413 import cmdgen
 from pysnmp.carrier.asynsock.dgram import udp
 import sys
-from io import StringIO
+
 
 oid_list = []
 maxRepetitions = 0
@@ -33,23 +33,15 @@ def cbFun(sendRequesthandle, errorIndication, errorStatus, errorIndex, varBindTa
     if errorStatus:
         print('%s at %s' % (errorStatus.prettyPrint(), errorIndex and varBindTable[-1][int(errorIndex) - 1] or '?'))
         return  # stop on error
-    # print(varBindTable)
     for varBindRow in varBindTable:
         if maxRepetitions == 0:  # 如果为0
             return  # 停止，并且返回
         else:
             for oid, val in varBindTable[0]:
-                o = StringIO()
-                print(oid, file=o)
-                oid_get = o.getvalue().strip()  # 通过print到StringIO进行转码，然后读回
-                o.close()
-                v = StringIO()
-                print(val, file=v)
-                val_get = v.getvalue().strip()  # 通过print到StringIO进行转码，然后读回
-                v.close()
-                oid_list.append((oid_get, val_get))  # 把oid和val的对添加到全局清单oid_list
+                oid_list.append((oid.prettyPrint(), val.prettyPrint()))  # 把oid和val的对添加到全局清单oid_list
         maxRepetitions -= 1  # 数量减一
-    return True  # signal dispatcher to continue walking#返回一个型号，继续往下查询！
+
+    return True  # signal dispatcher to continue walking#返回一个信号，继续往下查询！
 
 
 def snmpv3_getbulk(ip='', user='', hash_meth=None, hash_key=None, cry_meth=None, cry_key=None, oid='', num=10):
@@ -64,20 +56,18 @@ def snmpv3_getbulk(ip='', user='', hash_meth=None, hash_key=None, cry_meth=None,
     # usmNoPrivProtocol - no encryption
     global maxRepetitions
     maxRepetitions = num
-    hashval = None
-    cryval = None
-    model = None
 
-    config.addTargetAddr(  # 添加目标，'yourDevice'(OID与处理方法），'my-creds'（用户，密码，安全模型），目的IP与端口号
-        snmpEngine, 'yourDevice', udp.domainName, (ip, 161), 'my-creds')
+    # 添加目标，'yourDevice'(OID与处理方法），'my-creds'（用户，密码，安全模型），目的IP与端口号
+    config.addTargetAddr(snmpEngine, 'yourDevice', udp.domainName, (ip, 161), 'my-creds')
     # ========================下面的操作在判断安全模型==========================
     # NoAuthNoPriv
-    if hash_meth == None and cry_meth == None:
-        hashval = config.usmNoAuthProtocol
-        cryval = config.usmNoPrivProtocol
-        model = 'noAuthNoPriv'
+    if hash_meth is None and cry_meth is None:
+        hashval = config.usmNoAuthProtocol  # 配置HASH算法
+        cryval = config.usmNoPrivProtocol  # 配置加密算法
+        model = 'noAuthNoPriv'  # 配置安全模式
     # AuthNoPriv
-    elif hash_meth != None and cry_meth == None:
+    elif hash_meth is not None and cry_meth is None:
+        # 配置HASH算法
         if hash_meth == 'md5':
             hashval = config.usmHMACMD5AuthProtocol
         elif hash_meth == 'sha':
@@ -85,10 +75,11 @@ def snmpv3_getbulk(ip='', user='', hash_meth=None, hash_key=None, cry_meth=None,
         else:
             print('哈希算法必须是md5 or sha!')
             return
-        cryval = config.usmNoPrivProtocol
-        model = 'authNoPriv'
+        cryval = config.usmNoPrivProtocol  # 配置加密算法
+        model = 'authNoPriv'  # 配置安全模式
     # AuthPriv
-    elif hash_meth != None and cry_meth != None:
+    elif hash_meth is not None and cry_meth is not None:
+        # 配置HASH算法
         if hash_meth == 'md5':
             hashval = config.usmHMACMD5AuthProtocol
         elif hash_meth == 'sha':
@@ -96,6 +87,7 @@ def snmpv3_getbulk(ip='', user='', hash_meth=None, hash_key=None, cry_meth=None,
         else:
             print('哈希算法必须是md5 or sha!')
             return
+        # 配置加密算法
         if cry_meth == '3des':
             cryval = config.usm3DESEDEPrivProtocol
         elif cry_meth == 'des':
@@ -109,21 +101,19 @@ def snmpv3_getbulk(ip='', user='', hash_meth=None, hash_key=None, cry_meth=None,
         else:
             print('加密算法必须是3des, des, aes128, aes192 or aes256 !')
             return
-        model = 'authPriv'
+        model = 'authPriv'  # 配置安全模式
     # 提供的参数不符合标准时给出提示
     else:
         print('三种USM: NoAuthNoPriv, AuthNoPriv, AuthPriv.。请选择其中一种。')
         return
     # ========================判断安全模型结束==========================
-
-    config.addV3User(  # 添加用户与他的密钥
-        snmpEngine, user, hashval, hash_key, cryval, cry_key)
+    # 添加用户与他的密钥
+    config.addV3User(snmpEngine, user, hashval, hash_key, cryval, cry_key)
     config.addTargetParams(snmpEngine, 'my-creds', user, model)  # 创建'my-creds',里边有用户和安全模型
 
     # Prepare initial request to be sent
-
-    cmdgen.BulkCommandGenerator().sendReq(snmpEngine, 'yourDevice', 0, 1, ((oid, None),),
-                                          cbFun)  # 创建'yourDevice'，有OID和处理方法cbFun
+    # 创建'yourDevice'，有OID和处理方法cbFun
+    cmdgen.BulkCommandGenerator().sendReq(snmpEngine, 'yourDevice', 0, 1, ((oid, None),), cbFun)
 
     # Run I/O dispatcher which would send pending queries and process responses
     snmpEngine.transportDispatcher.runDispatcher()  # 运行实例
@@ -132,26 +122,13 @@ def snmpv3_getbulk(ip='', user='', hash_meth=None, hash_key=None, cry_meth=None,
 
 
 if __name__ == '__main__':
-    for item in snmpv3_getbulk('10.1.1.253', 'qytanguser', 'sha', 'Cisc0123', 'des', 'Cisc0123', '1.3.6.1.2.1.2.2.1.2', 10):
+    # 使用Linux解释器 & WIN解释器
+    for item in snmpv3_getbulk('10.1.1.253',
+                               'qytanguser',
+                               'sha',
+                               'Cisc0123',
+                               'des',
+                               'Cisc0123',
+                               '1.3.6.1.2.1.2.2.1.2',
+                               10):
         print('OID: ', item[0], 'VALUE: ', item[1])  # 从oid_list读取并且打印信息
-
-    # try:
-    #     ip = sys.argv[1]  # 读取客户输入参数
-    #     user = sys.argv[2]  # 读取客户输入参数
-    #     hm = sys.argv[3]  # 读取客户输入参数
-    #     hk = sys.argv[4]  # 读取客户输入参数
-    #     cm = sys.argv[5]  # 读取客户输入参数
-    #     ck = sys.argv[6]  # 读取客户输入参数
-    #     oid = sys.argv[7]  # 读取客户输入参数
-    #     num = int(sys.argv[8])  # 读取客户输入参数
-    #     for item in snmpv3_getbulk(ip, user, hm, hk, cm, ck, oid, num):
-    #         print('OID: ', item[0], 'VALUE: ', item[1])  # 从oid_list读取并且打印信息
-    #
-    # except Exception as e:  # 错误提示
-    #     print(e)
-    #     print('参数设置应该如下:')
-    #     print('python3 mygetbulk.py IP地址 用户名 认证算法 认证密钥 加密算法 加密密钥 OID 请求OID的数量')
-    #     print('认证算法支持md5和sha')
-    #     print('加密算法支持3des, des, aes128, aes192, aes256')
-    #     print('例如：')
-    #     print('python3 mygetbulk.py 192.168.1.1 user1 sha Cisc0123 des Cisc0123 1.3.6.1.2.1.2.2.1.10.1 10')
