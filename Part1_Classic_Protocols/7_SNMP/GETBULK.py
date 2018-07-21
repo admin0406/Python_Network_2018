@@ -26,7 +26,7 @@ def snmpv2_getbulk(ip, community, oid, count=25, port=161):
     详细介绍
     https://www.webnms.com/snmp/help/snmpapi/snmpv3/snmp_operations/snmp_getbulk.html
     """
-
+    # 错误处理
     if errorIndication:
         print(errorIndication)
     elif errorStatus:
@@ -37,6 +37,7 @@ def snmpv2_getbulk(ip, community, oid, count=25, port=161):
               )
 
     result = []
+    # varBindTable是个list，元素的个数可能有好多个。它的元素也是list，这个list里的元素是ObjectType，个数只有1个。
     for varBindTableRow in varBindTable:
         for item in varBindTableRow:
             result.append((item.prettyPrint().split("=")[0].strip(), item.prettyPrint().split("=")[1].strip()))

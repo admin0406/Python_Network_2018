@@ -19,15 +19,20 @@ def snmpv2_set(ip, community, oid, value, port=161):
         cmdgen.UdpTransportTarget((ip, port)),  # IP地址和端口号
         (oid, rfc1902.OctetString(value))  # OID和写入的内容，需要进行编码！
     )
-
+    # 错误处理
     if errorIndication:
+        print("写入错误!!!")
         print(errorIndication)
     elif errorStatus:
+        print("写入错误!!!")
         print('%s at %s' % (
             errorStatus.prettyPrint(),
             errorindex and varBinds[int(errorindex) - 1][0] or '?'
         )
               )
+    else:
+        print("写入成功!!!")
+    # 打印回显示结果
     for name, val in varBinds:
         print('%s = %s' % (name.prettyPrint(), val.prettyPrint()))  # 打印修改的结果
 

@@ -13,13 +13,12 @@ from pysnmp.entity.rfc3413.oneliner import cmdgen
 def snmpv2_getnext(ip, community, oid, port=161):
     cmdGen = cmdgen.CommandGenerator()
 
-    # varBindTable是个list，元素的个数可能有好多个。它的元素也是list，这个list里的元素是ObjectType，个数只有1个。
     errorIndication, errorStatus, errorindex, varBindTable = cmdGen.nextCmd(
         cmdgen.CommunityData(community),  # 设置community
         cmdgen.UdpTransportTarget((ip, port)),  # 设置IP地址和端口号
         oid,  # 设置OID
     )
-
+    # 错误处理
     if errorIndication:
         print(errorIndication)
     elif errorStatus:
@@ -30,6 +29,7 @@ def snmpv2_getnext(ip, community, oid, port=161):
               )
 
     result = []
+    # varBindTable是个list，元素的个数可能有好多个。它的元素也是list，这个list里的元素是ObjectType，个数只有1个。
     for varBindTableRow in varBindTable:
         for item in varBindTableRow:
             result.append((item.prettyPrint().split("=")[0].strip(), item.prettyPrint().split("=")[1].strip()))

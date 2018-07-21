@@ -30,7 +30,7 @@ def cbFun(transportDispatcher, transportDomain, transportAddress, wholeMsg):  # 
               )
         reqPDU = pMod.apiMessage.getPDU(reqMsg)
         if reqPDU.isSameTypeWith(pMod.TrapPDU()):
-            if msgVer == api.protoVersion1:
+            if msgVer == api.protoVersion1:  # SNMPv1的特殊处理方法,可以提取更加详细的信息
                 print('Enterprise: %s' % (
                     pMod.apiTrapPDU.getEnterprise(reqPDU).prettyPrint()
                 )
@@ -52,10 +52,10 @@ def cbFun(transportDispatcher, transportDomain, transportAddress, wholeMsg):  # 
                 )
                       )
                 varBinds = pMod.apiTrapPDU.getVarBindList(reqPDU)
-            else:
+            else:  # SNMPv2c的处理方法
                 varBinds = pMod.apiPDU.getVarBindList(reqPDU)
             print('Var-binds:')
-            for x in varBinds:
+            for x in varBinds:  # 打印详细Trap信息
                 for x,y in x.items():
                     print(x,y)
     return wholeMsg
@@ -73,7 +73,7 @@ def snmp_trap_receiver(ifname, port=162):
     )
 
     transportDispatcher.jobStarted(1)  # 开始工作
-
+    print("SNMP Trap Receiver Started!!!")
     try:
         # Dispatcher will never finish as job#1 never reaches zero
         transportDispatcher.runDispatcher()  # 运行
@@ -84,4 +84,4 @@ def snmp_trap_receiver(ifname, port=162):
 
 if __name__ == "__main__":
     # 使用Linux解释器 & WIN解释器
-    snmp_trap_receiver("ens33")
+    snmp_trap_receiver("Net1")
