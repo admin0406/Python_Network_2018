@@ -34,12 +34,3 @@ def ntp_client(NTP_SERVER):
 
 if __name__ == '__main__':
     ntp_client("0.uk.pool.ntp.org")
-    # parser = optparse.OptionParser('用法：\n python3 NTP_Client_RAW.py --server NTP服务器')
-    # parser.add_option('--server', dest='server', type='string', help='NTP服务器')
-    # (options, args) = parser.parse_args()
-    # server = options.server
-    # if server is None:
-    #     print(parser.usage)
-    # else:
-    #     ntp_client(server)
-    # # '0.uk.pool.ntp.org'
