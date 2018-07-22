@@ -10,6 +10,7 @@
 from ftplib import FTP
 import re
 import optparse
+import os
 
 
 def ftp_find(hostname, username, password, dirpath='/', file_type='.py', timeout=1, verbose=True):
@@ -51,9 +52,8 @@ def ftp_find(hostname, username, password, dirpath='/', file_type='.py', timeout
         DirRecursive(dirpath)  # 执行函数
         connection.close()  # 退出FTP连接会话
         filetype_in_ftp = []  # 最终返回的，特定类型文件的清单
-        offset = 0 - len(file_type)  # 通过文件类型的长度，计算得到文件扩展名的偏移量
         for x in path:  # 遍历整个文件清单
-            if x[offset:] == file_type:  # 查找扩展名匹配的文件
+            if os.path.splitext(x)[1] == file_type:  # 如果后缀名与我们查找文件的后缀名相同
                 filetype_in_ftp.append(x)  # 把找到的文件放入filetype_in_ftp清单
 
         return filetype_in_ftp  # 返回filetype_in_ftp清单
