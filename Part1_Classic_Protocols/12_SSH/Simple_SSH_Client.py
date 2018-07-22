@@ -27,4 +27,5 @@ def QYT_SSHClient_SingleCMD(ip, username, password, cmd):
 
 
 if __name__ == '__main__':
+    # 使用Linux解释器 & WIN解释器
     print(QYT_SSHClient_SingleCMD('10.1.1.253', 'admin', 'Cisc0123', 'show ver'))

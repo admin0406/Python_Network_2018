@@ -27,5 +27,6 @@ def ssh_sftp_get(ip, user, password, remote_file, local_file, port=22):
 
 
 if __name__ == '__main__':
+    # 使用Linux解释器 & WIN解释器
     ssh_sftp_put('10.1.1.80', 'root', 'Cisc0123', 'Adv_SSH_Client.py', 'Adv_SSH_Client.py', port=22)
     ssh_sftp_get('10.1.1.80', 'root', 'Cisc0123', 'get-pip.py', 'get-pip.py', port=22)

@@ -15,19 +15,20 @@ from email.mime.application import MIMEApplication
 
 
 def qyt_smtp_attachment(mailserver, username, password, From, To, Subj, Main_Body, files=None):
+    # 使用SSL加密SMTP发送邮件, 此函数发送的邮件有主题,有正文,还可以发送附件
     Tos = To.split(';')  # 把多个邮件接受者通过';'分开
     Date = email.utils.formatdate()  # 格式化邮件时间
     msg = MIMEMultipart()
-    msg["Subject"] = Subj
-    msg["From"] = From
-    msg["To"] = To
-    msg["Date"] = Date
+    msg["Subject"] = Subj  # 主题
+    msg["From"] = From  # 发件人
+    msg["To"] = To  # 收件人
+    msg["Date"] = Date  # 发件日期
 
     part = MIMEText(Main_Body)
-    msg.attach(part)
+    msg.attach(part)  # 添加正文
 
-    if files:
-        for file in files:
+    if files:  # 如果存在附件文件
+        for file in files:  # 逐个读取文件,并添加到附件
             part = MIMEApplication(open(file, 'rb').read())
             part.add_header('Content-Disposition', 'attachment', filename=file)
             msg.attach(part)
@@ -39,36 +40,16 @@ def qyt_smtp_attachment(mailserver, username, password, From, To, Subj, Main_Bod
     if failed:
         print('Falied recipients:', failed)  # 如果出现故障，打印故障原因！
     else:
-        print('邮件已经成功发出！')  # 如果没有故障发生，打印‘No errors.’！
+        print('邮件已经成功发出！')  # 如果没有故障发生，打印'邮件已经成功发出！'！
 
-
-# print('Bye.')
 
 if __name__ == '__main__':
+    # 使用Linux解释器 & WIN解释器
     qyt_smtp_attachment('smtp.qq.com',
                         '3348326959@qq.com',
-                        'mygmsrdptfuwcjbh',
+                        'dmyymagcazklcjie',
                         '3348326959@qq.com',
                         '3348326959@qq.com;collinsctk@qytang.com',
                         '附件测试_主题',
                         '附件测试_正文',
                         ['Logo.jpg'])
-    # import getpass
-    #
-    # username = input('请输入用户名: ')
-    # password = getpass.getpass('请输入密码: ')  # 读取密码，但是不回显！
-    # subject = input('请输入邮件主题: ')
-    # Main_Body = input('请输入邮件正文: ')
-    # files_input = input("输入文件名用','分开: ")
-    # if re.match('\s*\w+', files_input):
-    #     files = files_input.split(',')
-    # else:
-    #     files = None
-    # qyt_smtp_attachment('smtp.qq.com',
-    #                     username,
-    #                     password,
-    #                     'collinsctk@163.com',
-    #                     'collinsctk@qytang.com;collinsctk@163.com',
-    #                     subject,
-    #                     Main_Body,
-    #                     files)

@@ -11,12 +11,13 @@ import smtplib, sys, email.utils
 
 
 def qyt_smtp_sendmail(mailserver, username, password, From, To, Subj):
+    # 使用SSL加密SMTP发送邮件, 此函数发送的邮件仅仅只有主题,并没有正文部分,用于简单告警的目的
     Tos = To.split(';')  # 把多个邮件接受者通过';'分开
     Date = email.utils.formatdate()  # 格式化邮件时间
     # print(Date)
     text = ('From: %s\nTo: %s\nData: %s\nSubject: %s\n\n' % (From, To, Date, Subj))
     # print(text)
-    server = smtplib.SMTP_SSL(mailserver,465)  # 连接邮件服务器
+    server = smtplib.SMTP_SSL(mailserver, 465)  # 连接邮件服务器
     server.login(username, password)  # 通过用户名和密码登录邮件服务器
     failed = server.sendmail(From, Tos, text)  # 发送邮件
     server.quit()  # 退出会话
@@ -28,11 +29,7 @@ def qyt_smtp_sendmail(mailserver, username, password, From, To, Subj):
 
 
 if __name__ == '__main__':
-    qyt_smtp_sendmail('smtp.qq.com', '3348326959@qq.com', 'mygmsrdptfuwcjbh', '3348326959@qq.com',
+    # 使用Linux解释器 & WIN解释器
+    qyt_smtp_sendmail('smtp.qq.com', '3348326959@qq.com', 'dmyymagcazklcjie', '3348326959@qq.com',
                        '3348326959@qq.com;collinsctk@qytang.com', 'This is a text only mail')
-    # import getpass
-    #
-    # username = input('请输入用户名: ')
-    # password = getpass.getpass('请输入密码: ')  # 读取密码，但是不回显！
-    # qyt_smtp_sendmail('smtp.qq.com', username, password, username,
-    #                   'collinsctk@qytang.com', 'This is a text only mail')
+

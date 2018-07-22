@@ -34,4 +34,5 @@ def QYT_SSHClient_MultiCMD(ip, username, password, cmd_list):
 
 
 if __name__ == '__main__':
+    # 使用Linux解释器 & WIN解释器
     QYT_SSHClient_MultiCMD('2001:1::253', 'admin', 'Cisc0123', ['terminal length 0', 'show ver', 'config ter', 'router ospf 1'])

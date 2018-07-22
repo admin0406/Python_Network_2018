@@ -28,40 +28,41 @@ def qyt_rec_mail(mailserver, mailuser, mailpasswd):
 
         for i in range(msgCount):  # 逐个读取邮件
             hdr, message, octets = server.retr(i + 1)  # 读取邮件
-            str_message = email.message_from_bytes(b'\n'.join(message))
+            str_message = email.message_from_bytes(b'\n'.join(message))  # 把邮件内容拼接到大字符串
 
             for part in str_message.walk():
-                # print(part.get_content_type())
                 if part.get_content_maintype() == 'multipart':
                     part_dict = part.items()
                     for key in part_dict:
                         if key[0] == 'Subject':
+                            # =?utf-8?b?6ZmE5Lu25rWL6K+VX+S4u+mimA==?=
                             if re.match('=\?(.*)\?\w\?(.*)=\?', key[1]).groups():
                                 re_result = re.match('=\?(.*)\?\w\?(.*)\?=', key[1]).groups()
-                                prefix = '=?' + re_result[0]
-                                suffix = '?='
-                                middle = re_result[1]
-                                decoded = base64.b64decode(middle)
-                                mail_prefix = str(decoded.decode(re_result[0]))
+                                # re_result[0] 为编码方式
+                                middle = re_result[1]  # 提取base64的内容 6ZmE5Lu25rWL6K+VX+S4u+mimA==
+                                decoded = base64.b64decode(middle)  # 对内容进行base64解码
+                                mail_prefix = str(decoded.decode(re_result[0]))  # 再对base64解码后内容,进行utf-8解码,转换为中文内容
                             else:
-                                mail_prefix = key[1]
+                                mail_prefix = key[1]  # 英文就直接显示
                     continue
-                filename = part.get_filename()
-                if filename == None:
+                filename = part.get_filename()  # 获取文件名
+
+                if filename is None:  # 没有文件名表示文本信息
                     mail_file_name = mail_prefix + '_' + str(i) + '.txt'
-                    fp = open(mail_file_name, 'wb')
+                    fp = open(mail_file_name, 'wb')  # 把文本内容写入txt文件
                     for key in part_dict:
                         string = key[0] + '===>' + key[1] + '\n'
                         fp.write(string.encode())
                     fp.write(b'Main Body ===>')
-                    fp.write(part.get_payload(decode=1))
+                    fp.write(part.get_payload(decode=1))  # 写入正文
                     fp.close
-                else:
+                else:  # 如果有文件名表示是附件,单独保存附件数据
                     filename = filename.encode("utf-8").decode()
                     mail_file_name = mail_prefix + '_' + str(i) + '+' + filename
                     fp = open(mail_file_name, 'wb')
                     fp.write(part.get_payload(decode=1))
                     fp.close
+            server.dele(i + 1)  # 删除邮件
 
     finally:
         server.quit()  # 退出服务器
@@ -69,8 +70,5 @@ def qyt_rec_mail(mailserver, mailuser, mailpasswd):
 
 
 if __name__ == '__main__':
-    qyt_rec_mail('pop.qq.com', '3348326959@qq.com', 'mygmsrdptfuwcjbh')
-    # import getpass
-    # username = input('请输入用户名: ')
-    # password = getpass.getpass('请输入密码: ')#读取密码，但是不回显！
-    # qyt_rec_mail('pop.163.com', username, password)
+    # 使用Linux解释器 & WIN解释器
+    qyt_rec_mail('pop.qq.com', '3348326959@qq.com', 'dmyymagcazklcjie')

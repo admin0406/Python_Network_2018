@@ -62,4 +62,5 @@ def ftp_find(hostname, username, password, dirpath='/', file_type='.py', timeout
 
 
 if __name__ == '__main__':
+    # 使用Linux解释器 & WIN解释器
     print(ftp_find('10.1.1.200', 'qytang', 'Cisc0123', '/', '.py'))

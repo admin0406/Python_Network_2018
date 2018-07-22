@@ -27,4 +27,5 @@ def downloadfile(hostname, file, username='anonymous', password='1@2.net', rdir=
 
 
 if __name__ == '__main__':
+    # 使用Linux解释器 & WIN解释器
     downloadfile('10.1.1.200', '/python/qytang2/qytang.py', 'qytang', 'Cisc0123')

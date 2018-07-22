@@ -30,6 +30,7 @@ def qyt_rec_mail(mailserver, mailuser, mailpasswd, mailprefix):
             for line in message:
                 mail_file.write(line)  # 把邮件写入本地邮件文件
             mail_file.close()  # 写入完毕，关闭本地邮件文件
+            server.dele(i + 1)  # 删除邮件
             print(mail_file_name + ' Recieved!!!')
     finally:
         server.quit()  # 退出服务器
@@ -37,10 +38,5 @@ def qyt_rec_mail(mailserver, mailuser, mailpasswd, mailprefix):
 
 
 if __name__ == '__main__':
-    qyt_rec_mail('pop.qq.com', '3348326959@qq.com', 'mygmsrdptfuwcjbh', 'qytang_test')
-    # import getpass
-    #
-    # username = input('请输入用户名: ')
-    # password = getpass.getpass('请输入密码: ')  # 读取密码，但是不回显！
-    # mailprefix = input('邮件前缀: ')
-    # qyt_rec_mail('pop.163.com', username, password, mailprefix)
+    # 使用Linux解释器 & WIN解释器
+    qyt_rec_mail('pop.qq.com', '3348326959@qq.com', 'dmyymagcazklcjie', 'qytang_test')
