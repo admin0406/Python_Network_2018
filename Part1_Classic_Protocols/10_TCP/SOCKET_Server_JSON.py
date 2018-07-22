@@ -7,12 +7,11 @@
 # https://ke.qq.com/course/271956?tuin=24199d8a
 
 
-import pickle
-from io import BytesIO
+import json
 from socket import *
 
 
-def Server_PIC(ip, port):
+def Server_JSON(ip, port):
     # 创建TCP Socket, AF_INET为IPv4，SOCK_STREAM为TCP
     sockobj = socket(AF_INET, SOCK_STREAM)
     # 绑定套接字到地址，地址为（host，port）的元组
@@ -30,19 +29,12 @@ def Server_PIC(ip, port):
         while recieved_message_fragment:
             recieved_message = recieved_message + recieved_message_fragment  # 把所有接收到信息分片重组装
             recieved_message_fragment = connection.recv(1024)
-        obj = pickle.loads(recieved_message)  # 把接收到信息pickle回正常的obj
-        if isinstance(obj, dict):
-            print("收到字典数据!!!")
-            print(obj)  # 打印obj，当然也可以选择写入文件或者数据库
-        elif isinstance(obj, bytes):
-            myfile = open('NewLogo.jpg', 'wb')
-            myfile.write(obj)
-            myfile.close()
-            print("收到二进制数据,并写入到文件!!!")
+        obj = json.loads(recieved_message.decode())  # 把接收到信息json.loads回正常的obj
+        print(obj)  # 打印obj，当然也可以选择写入文件或者数据库
         connection.close()
 
 
 if __name__ == '__main__':
     Server_IP = '0.0.0.0'
     Server_Port = 6666
-    Server_PIC(Server_IP, Server_Port)
+    Server_JSON(Server_IP, Server_Port)

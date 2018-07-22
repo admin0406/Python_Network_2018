@@ -10,7 +10,7 @@
 from socket import *
 
 # 连接的服务器地址
-myHost = '10.1.1.80'
+myHost = '10.1.1.100'
 # 连接的服务器端口号
 myPort = 6666
 
@@ -21,7 +21,9 @@ sockobj.connect((myHost, myPort))
 
 while True:  # 一直执行循环直到break出现！
     msg = input("请输入回显信息(exit退出):")
-    if msg != 'exit':
+    if msg is "":
+        print("请输入正确信息!!!")
+    elif msg != 'exit':
         sockobj.send(msg.encode())
         echo_msg = sockobj.recv(1024)
         print(echo_msg.decode())

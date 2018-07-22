@@ -10,7 +10,7 @@
 from socket import *
 
 # 配置本地服务器IP地址
-myHost = '10.1.1.80'
+myHost = '10.1.1.100'
 # 配置本地服务器端口号
 myPort = 6666
 

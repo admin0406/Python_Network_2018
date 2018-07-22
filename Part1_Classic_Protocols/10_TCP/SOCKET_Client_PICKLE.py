@@ -27,4 +27,6 @@ def Client_PIC(ip, port, obj):
 
 if __name__ == '__main__':
     dict = {'key1': 'welcome to qytang', 'key2': [1, 2, 3, 4, 5], 'key3': ([3, 4], 'python')}
-    Client_PIC('10.1.1.80', 6666, dict)
+    myfile = open('Logo.jpg', 'rb').read()
+    Client_PIC('10.1.1.100', 6666, dict)
+    Client_PIC('10.1.1.100', 6666, myfile)

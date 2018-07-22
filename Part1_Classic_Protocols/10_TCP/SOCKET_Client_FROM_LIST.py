@@ -11,7 +11,7 @@ import sys
 from socket import *
 
 # 连接的服务器地址
-serverHost = '10.1.1.80'
+serverHost = '10.1.1.100'
 # 连接的服务器端口号
 serverPort = 6666
 # 发送的回显信息
