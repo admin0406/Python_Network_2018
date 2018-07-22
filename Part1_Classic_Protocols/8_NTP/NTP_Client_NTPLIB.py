@@ -20,4 +20,5 @@ def ntp_client(NTP_SERVER):
 
 
 if __name__ == '__main__':
+    # 使用Linux解释器 & WIN解释器
     ntp_client('0.uk.pool.ntp.org')
