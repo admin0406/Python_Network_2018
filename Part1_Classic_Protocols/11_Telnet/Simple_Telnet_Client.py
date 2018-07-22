@@ -12,7 +12,7 @@ from telnetlib import Telnet
 import time
 
 
-def QYT_TelnetClient(ip, username, password, enable, *cmds):
+def QYT_TelnetClient(ip, username, password, cmd_list, enable=None):
     tn = Telnet(ip, 23)
     rackreply = tn.expect([], timeout=1)[2].decode().strip()  # 读取回显
     print(rackreply)  # 打印回显
@@ -26,16 +26,17 @@ def QYT_TelnetClient(ip, username, password, enable, *cmds):
     time.sleep(1)
     rackreply = tn.expect([], timeout=1)[2].decode().strip()
     print(rackreply)
-    tn.write(b'enable\n')
+    if enable is not None:
+        tn.write(b'enable\n')
+        time.sleep(1)
+        rackreply = tn.expect([], timeout=1)[2].decode().strip()
+        print(rackreply)
+        tn.write(enable.encode())
+        tn.write(b'\n')
+        rackreply = tn.expect([], timeout=1)[2].decode().strip()
+        print(rackreply)
     time.sleep(1)
-    rackreply = tn.expect([], timeout=1)[2].decode().strip()
-    print(rackreply)
-    tn.write(enable.encode())
-    tn.write(b'\n')
-    rackreply = tn.expect([], timeout=1)[2].decode().strip()
-    print(rackreply)
-    time.sleep(1)
-    for cmd in cmds:  # 读取命令，并且逐个执行！
+    for cmd in cmd_list:  # 读取命令，并且逐个执行！
         tn.write(cmd.encode() + b'\n')
         rackreply = tn.expect([], timeout=1)[2].decode().strip()
         print(rackreply)
@@ -47,5 +48,6 @@ def QYT_TelnetClient(ip, username, password, enable, *cmds):
 
 
 if __name__ == "__main__":
-    QYT_TelnetClient('10.1.1.253', 'cisco', 'cisco', 'cisco', 'terminal length 0', 'show ver', 'config ter',
-                     'router ospf 1')
+    # 使用Linux解释器 & WIN解释器
+    cmds = ['terminal length 0', 'show ver', 'config ter', 'router ospf 1']
+    QYT_TelnetClient('10.1.1.253', 'admin', 'Cisc0123', cmd_list=cmds)

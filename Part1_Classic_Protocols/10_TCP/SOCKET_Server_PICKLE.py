@@ -43,6 +43,7 @@ def Server_PIC(ip, port):
 
 
 if __name__ == '__main__':
+    # 使用Linux解释器 & WIN解释器
     Server_IP = '0.0.0.0'
     Server_Port = 6666
     Server_PIC(Server_IP, Server_Port)

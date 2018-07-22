@@ -31,6 +31,7 @@ def Client_JSON(ip, port, obj):
 
 
 if __name__ == '__main__':
+    # 使用Linux解释器 & WIN解释器
     dict1 = {'key1': 'welcome to qytang', 'key2': [1, 2, 3, 4, 5], 'key3': ([3, 4], 'python'),'key4': 'python'*2048}
     dict2 = {'key1': 'welcome to qytang', 'key2': [1, 2, 3, 4, 5], 'key3': ([3, 4], 'python'), 'key4': 'python'}
     Client_JSON('10.1.1.100', 6666, dict1)
