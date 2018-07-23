@@ -10,7 +10,7 @@ import logging
 
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)  # 清除报错
 from scapy.all import *
-from Tools.Scapy_IFACE import scapy_iface
+from Part1_Classic_Protocols.Tools.Scapy_IFACE import scapy_iface
 
 
 def tcp_monitor_callback(pkt):
@@ -53,4 +53,4 @@ def tcp_reset(src_ip, dst_ip, dst_port, ifname, src_port=None):
 
 if __name__ == "__main__":
     # 使用Linux解释器 & WIN解释器
-    tcp_reset('10.1.1.100', '10.1.1.253', '23', 'Net1')
+    tcp_reset('10.1.1.100', '10.1.1.253', '23', 'ens33')

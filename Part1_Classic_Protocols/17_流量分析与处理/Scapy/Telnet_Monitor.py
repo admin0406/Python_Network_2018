@@ -12,6 +12,7 @@ logging.getLogger("scapy.runtime").setLevel(logging.ERROR)  # 清除报错
 import re
 from scapy.all import *
 import hexdump
+from Part1_Classic_Protocols.Tools.Scapy_IFACE import scapy_iface
 
 
 def qythexdump(src, length=16):  # 每16个字节被提取出来，进行16进制的decode
@@ -31,12 +32,16 @@ def telnet_monitor_callback(pkt):
         pass
 
 
-PTKS = sniff(prn=telnet_monitor_callback,
-             filter="tcp port 23 and ip host 10.1.1.253",
-             store=1,
-             # iface='ens33',
-             timeout=10)
+def telnet_monitor(user_filter, ifname):
+    PTKS = sniff(prn=telnet_monitor_callback,
+                 filter=user_filter,
+                 store=1,
+                 iface=scapy_iface(ifname),
+                 timeout=10)
 
-wrpcap("telnet.cap", PTKS)
-qythexdump(qyt_string)
+    wrpcap("telnet.cap", PTKS)
+    qythexdump(qyt_string)
 
+
+if __name__ == "__main__":
+    telnet_monitor('tcp port 23 and ip host 10.1.1.253', 'ens33')

