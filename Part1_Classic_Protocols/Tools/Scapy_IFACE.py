@@ -27,4 +27,5 @@ def scapy_iface(os_name):
 
 
 if __name__ == '__main__':
+    # print(ifaces)
     print(scapy_iface('Net1'))

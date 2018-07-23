@@ -21,24 +21,20 @@ def arp_request(ip_address, ifname='ens33'):
     # 获取本机MAC地址
     localmac = get_mac_address(ifname)
     try:  # 发送ARP请求并等待响应
-        result_raw = srp(Ether(src=localmac, dst='FF:FF:FF:FF:FF:FF') /
-                         ARP(op=1,
+        result_raw = sr1(ARP(op=1,
                              hwsrc=localmac, hwdst='00:00:00:00:00:00',
                              psrc=localip, pdst=ip_address),
                              iface=scapy_iface(ifname),
                              timeout=1,
                              verbose=False)
-        # 把响应的数据包对，产生为清单
-        result_list = result_raw[0].res
-        # [0]第一组响应数据包
-        # [1]接受到的包，[0]为发送的数据包
-        # 获取ARP头部字段中的['hwsrc']字段，作为返回值返回
-        return ip_address, result_list[0][1].getlayer(ARP).fields['hwsrc']
-    except IndexError:
+
+        return ip_address, result_raw.getlayer(ARP).fields['hwsrc']
+
+    except AttributeError:
         return ip_address, None
 
 
 if __name__ == "__main__":
     # Windows Linux均可使用
-    arp_result = arp_request('10.1.1.254', "Net1")
+    arp_result = arp_request('10.1.1.252', "ens33")
     print("IP地址:", arp_result[0], "MAC地址:", arp_result[1])
