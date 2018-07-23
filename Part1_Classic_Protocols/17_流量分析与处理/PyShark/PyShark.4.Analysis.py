@@ -12,15 +12,18 @@ import pyshark
 
 pkt_list = []
 
+# 分析现象级数据包,"tcp重传的数据包"
 cap = pyshark.FileCapture('dos.pcap', keep_packets=False, display_filter='tcp.analysis.retransmission')
 
 
 def print_highest_layer(pkt):
+    # 通过过滤得到数据包清单
     pkt_list.append(pkt)
 
 
 cap.apply_on_packets(print_highest_layer)
 
+# pretty_print TCP重传的数据包
 for x in pkt_list:
-    print(type(x))
+    print('='*80)
     x.pretty_print()

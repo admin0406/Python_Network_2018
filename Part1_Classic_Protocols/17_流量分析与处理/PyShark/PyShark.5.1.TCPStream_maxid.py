@@ -12,21 +12,20 @@ import pyshark
 def get_max_id(pcapfile):
     cap = pyshark.FileCapture(pcapfile, keep_packets=False)
 
-    sess_index = []  # to save stream indexes in an array
+    sess_index = []  # 所有的tcp流索引ID清单
 
     for pkt in cap:
         try:
-            sess_index.append(pkt.tcp.stream)
+            sess_index.append(pkt.tcp.stream)  # 把所有的tcp流索引ID放入清单
         except:
             pass
 
-    if len(sess_index) == 0:
-        max_index = 0
+    if len(sess_index) == 0:  # 如果没有任何索引ID就打印错误
         print('No TCP Found')
     else:
-        sess_index_int = [int(sid) for sid in sess_index]
+        sess_index_int = [int(sid) for sid in sess_index]  # 把索引ID字符串转换为整数,便于排序
 
-    return max(sess_index_int)
+    return max(sess_index_int)  # 返回最大的索引ID
 
 
 if __name__ == '__main__':

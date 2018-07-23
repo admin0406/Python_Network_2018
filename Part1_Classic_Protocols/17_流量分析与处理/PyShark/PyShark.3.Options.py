@@ -8,10 +8,12 @@
 
 import pyshark
 
-pkt_list = []
+pkt_list = []  # 过滤后得到的数据包清单
 
+# 可以使用Wireshark强大的display filter进行过滤
 cap = pyshark.FileCapture('dos.pcap', keep_packets=False, display_filter='(((http) && (ip.src == 196.21.5.12))) && (http.host matches "sina.com.cn")')
 
+# 所有显示字段一览
 #pkt
 #['__class__', '__contains__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__', '__getitem__', '__getstate__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__setstate__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_packet_string', 'captured_length', 'eth', 'frame_info', 'get_multiple_layers', 'get_raw_packet', 'highest_layer', 'http', 'interface_captured', 'ip', 'layers', 'length', 'number', 'pretty_print', 'show', 'sniff_time', 'sniff_timestamp', 'tcp', 'transport_layer']
 #ip
@@ -23,6 +25,7 @@ cap = pyshark.FileCapture('dos.pcap', keep_packets=False, display_filter='(((htt
 
 
 def print_highest_layer(pkt):
+    # 打印包中的特定字段
     print('='*20,pkt.sniff_time,'='*20)
     print(pkt.length)
     #print(pkt.sniff_time)
@@ -35,7 +38,9 @@ def print_highest_layer(pkt):
     pkt_list.append(pkt)
 
 
+# 把函数应用到数据包
 cap.apply_on_packets(print_highest_layer)
 
+# 打印得到的数据包清单
 print(pkt_list)
 

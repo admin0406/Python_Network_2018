@@ -7,7 +7,7 @@
 # https://ke.qq.com/course/271956?tuin=24199d8a
 import pyshark
 
-# Linux和Windows都有问题
+# Linux和Windows都有问题,在Py3.5环境是OK的!
 capture = pyshark.LiveCapture(interface='ens33')
-capture.sniff(timeout=50)
+capture.sniff(timeout=5)
 
