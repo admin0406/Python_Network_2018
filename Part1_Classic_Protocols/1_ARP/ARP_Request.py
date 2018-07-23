@@ -12,6 +12,7 @@ logging.getLogger("scapy.runtime").setLevel(logging.ERROR)  # 清除报错
 from scapy.all import *
 from Tools.GET_IP_netifaces import get_ip_address  # 获取本机IP地址
 from Tools.GET_MAC_netifaces import get_mac_address  # 获取本机MAC地址
+from Tools.Scapy_IFACE import scapy_iface
 
 
 def arp_request(ip_address, ifname='ens33'):
@@ -24,7 +25,7 @@ def arp_request(ip_address, ifname='ens33'):
                          ARP(op=1,
                              hwsrc=localmac, hwdst='00:00:00:00:00:00',
                              psrc=localip, pdst=ip_address),
-                             #iface=ifname,  # windows 环境需要去掉
+                             iface=scapy_iface(ifname),
                              timeout=1,
                              verbose=False)
         # 把响应的数据包对，产生为清单
