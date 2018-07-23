@@ -8,7 +8,7 @@
 
 import netifaces
 import platform
-from Tools.GET_IFNAME import get_ifname
+from Part1_Classic_Protocols.Tools.GET_IFNAME import get_ifname
 
 
 def get_mac_address(ifname):

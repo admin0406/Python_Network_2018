@@ -9,7 +9,7 @@
 
 from netifaces import interfaces, ifaddresses, AF_INET, AF_INET6
 import platform
-from Tools.GET_IFNAME import get_ifname
+from Part1_Classic_Protocols.Tools.GET_IFNAME import get_ifname
 
 
 def get_ip_address(ifname):

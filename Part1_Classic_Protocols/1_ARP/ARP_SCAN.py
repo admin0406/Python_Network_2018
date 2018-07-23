@@ -13,7 +13,7 @@ logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
 import ipaddress
 from multiprocessing.pool import ThreadPool
 from ARP_Request import arp_request
-from Tools.SORT_IP import sort_ip
+from Part1_Classic_Protocols.Tools.SORT_IP import sort_ip
 
 
 def scapy_arp_scan(network,ifname):

@@ -5,7 +5,7 @@
       <paths name="root@10.1.1.80:22">
         <serverdata>
           <mappings>
-            <mapping deploy="/Python_Network_2018" local="$PROJECT_DIR$" />
+            <mapping deploy="/PYQYT/Python_Network_2018" local="$PROJECT_DIR$" />
           </mappings>
         </serverdata>
       </paths>

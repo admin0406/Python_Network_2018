@@ -10,7 +10,7 @@ import logging
 
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)  # 清除报错
 from scapy.all import *
-from Tools.GET_IFNAME import get_ifname
+from Part1_Classic_Protocols.Tools.GET_IFNAME import get_ifname
 import platform
 
 

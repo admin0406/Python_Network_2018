@@ -11,10 +11,10 @@ import logging
 
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)  # 清除报错
 from scapy.all import *
-from Tools.GET_IP_netifaces import get_ip_address  # 导入获取本机IP地址方法
-from Tools.GET_MAC_netifaces import get_mac_address  # 导入获取本机MAC地址方法
+from Part1_Classic_Protocols.Tools.GET_IP_netifaces import get_ip_address  # 导入获取本机IP地址方法
+from Part1_Classic_Protocols.Tools.GET_MAC_netifaces import get_mac_address  # 导入获取本机MAC地址方法
 from ARP_Request import arp_request  # 导入之前创建的ARP请求脚本
-from Tools.Scapy_IFACE import scapy_iface
+from Part1_Classic_Protocols.Tools.Scapy_IFACE import scapy_iface  # 获取scapy iface的名字
 import time
 import signal
 
