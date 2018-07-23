@@ -27,7 +27,7 @@ def dnspython(domain, Type="A"):
 
 
 if __name__ == '__main__':
-    # 使用Linux解释器 , Windows环境安装dns模块失败
+    # 使用Linux解释器 & WIN解释器
     print(dnspython("cisco.com", Type="A"))
     print(dnspython("cisco.com", Type="AAAA"))
     print(dnspython("www.cisco.com", Type="CNAME"))
