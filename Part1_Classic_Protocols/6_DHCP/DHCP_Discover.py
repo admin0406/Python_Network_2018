@@ -11,8 +11,9 @@ import logging
 
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)  # 清除报错
 from scapy.all import *
-from Tools.GET_MAC_netifaces import get_mac_address
-from Tools.Change_MAC_To_Bytes import Change_MAC_To_Bytes
+from Part1_Classic_Protocols.Tools.GET_MAC_netifaces import get_mac_address
+from Part1_Classic_Protocols.Tools.Change_MAC_To_Bytes import Change_MAC_To_Bytes
+from Part1_Classic_Protocols.Tools.Scapy_IFACE import scapy_iface  # 获取scapy iface的名字
 import time
 import struct
 # Dynamic Host Configuration Protocol (DHCP) and Bootstrap Protocol (BOOTP) Parameters
@@ -59,11 +60,11 @@ def DHCP_Discover_Sendonly(ifname, MAC, wait_time=1):
     if wait_time != 0:
         time.sleep(wait_time)
         sendp(discover,
-              # iface=ifname, # Windows环境取消iface选项
+              iface=scapy_iface(ifname),
               verbose=False)
     else:
         sendp(discover,
-              # iface=ifname, # Windows环境取消iface选项
+              iface=scapy_iface(ifname),
               verbose=False)
 
 

@@ -6,7 +6,7 @@
 # 教主技术进化论拓展你的技术新边疆
 # https://ke.qq.com/course/271956?tuin=24199d8a
 
-from Tools.GET_IP_netifaces import get_ip_address
+from Part1_Classic_Protocols.Tools.GET_IP_netifaces import get_ip_address
 
 import socket
 import sys
@@ -28,7 +28,7 @@ while True:
             print("客户端退出!")
             break
         # 如果客户发来的数据不为空,就显示数据,与源信息
-        print("接收到数据:",data,"来自于:",addr)
+        print("接收到数据:", data, "来自于:", addr)
     except KeyboardInterrupt:
         sys.exit()
 

@@ -11,7 +11,8 @@ import logging
 
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)  # 清除报错
 from scapy.all import *
-from Tools.Change_Chaddr_To_MAC import Change_Chaddr_To_MAC
+from Part1_Classic_Protocols.Tools.Change_Chaddr_To_MAC import Change_Chaddr_To_MAC
+from Part1_Classic_Protocols.Tools.Scapy_IFACE import scapy_iface  # 获取scapy iface的名字
 
 
 def DHCP_Monitor(pkt):
@@ -68,10 +69,10 @@ def DHCP_Monitor(pkt):
 def DHCP_Sinffer(ifname):
     sniff(prn=DHCP_Monitor,
           filter="port 68 and port 67",
-          # iface=ifname,  # Windows环境不指定接口
+          iface=scapy_iface(ifname),
           store=0)
 
 
 if __name__ == '__main__':
     # 使用Linux解释器 & WIN解释器
-    DHCP_Sinffer('Net1')
+    DHCP_Sinffer('ens33')

@@ -13,9 +13,10 @@ logging.getLogger("scapy.runtime").setLevel(logging.ERROR)  # 清除报错
 from scapy.all import *
 
 from multiprocessing.pool import ThreadPool
-from Tools.Change_MAC_To_Bytes import Change_MAC_To_Bytes
-from Tools.GET_MAC_netifaces import get_mac_address
-from Tools.Change_Chaddr_To_MAC import Change_Chaddr_To_MAC
+from Part1_Classic_Protocols.Tools.Change_MAC_To_Bytes import Change_MAC_To_Bytes
+from Part1_Classic_Protocols.Tools.GET_MAC_netifaces import get_mac_address
+from Part1_Classic_Protocols.Tools.Change_Chaddr_To_MAC import Change_Chaddr_To_MAC
+from Part1_Classic_Protocols.Tools.Scapy_IFACE import scapy_iface  # 获取scapy iface的名字
 from DHCP_Discover import DHCP_Discover_Sendonly
 from DHCP_Request import DHCP_Request_Sendonly
 
@@ -100,15 +101,10 @@ def DHCP_FULL(ifname, MAC, timeout=3):
     sniff(prn=DHCP_Monitor_Control,
           filter="port 68 and port 67",
           store=0,
-          # iface=Global_IF,  # Windows环境取消iface选项
+          iface=scapy_iface(Global_IF),
           timeout=timeout)
 
 
 if __name__ == '__main__':
     # 使用Linux解释器 & WIN解释器
-    DHCP_FULL('Net1', get_mac_address('Net1'))
-    # 如下代码实现DHCP DoS攻击
-    # from Tools.Random_MAC import Random_MAC
-    # import time
-    # while True:
-    #     DHCP_FULL('ens33', Random_MAC())
+    DHCP_FULL('ens33', get_mac_address('ens33'))

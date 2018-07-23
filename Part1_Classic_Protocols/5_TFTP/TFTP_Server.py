@@ -7,7 +7,7 @@
 # https://ke.qq.com/course/271956?tuin=24199d8a
 
 
-from Tools.minimumTFTP import Server
+from Part1_Classic_Protocols.Tools.minimumTFTP import Server
 
 
 def qyt_tftpserver(dir):

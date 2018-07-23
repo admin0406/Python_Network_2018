@@ -15,9 +15,9 @@ import logging
 
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)  # 清除报错
 from scapy.all import *
-from Tools.GET_MAC_netifaces import get_mac_address
+from Part1_Classic_Protocols.Tools.GET_MAC_netifaces import get_mac_address
 from ICMPv6_NS import icmpv6_ns
-from Tools.IPv6_Tools import mac_to_ipv6_linklocal
+from Part1_Classic_Protocols.Tools.IPv6_Tools import mac_to_ipv6_linklocal
 
 
 def icmpv6_na(spoofhost, dsthost, ifname):  # 发送NA主要用于毒化
@@ -51,4 +51,4 @@ def icmpv6_na(spoofhost, dsthost, ifname):  # 发送NA主要用于毒化
 if __name__ == '__main__':
     # Windows Linux均可使用
     # 欺骗2001:1::253 让它认为2001:1::200的MAC地址为本地攻击者计算机的MAC
-    icmpv6_na("2001:1::200", "2001:1::253", "Net1")
+    icmpv6_na("2001:1::200", "2001:1::253", "ens33")

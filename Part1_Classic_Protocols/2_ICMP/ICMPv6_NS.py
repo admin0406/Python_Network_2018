@@ -14,8 +14,8 @@ import logging
 
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)  # 清除报错
 from scapy.all import *
-from Tools.GET_MAC_netifaces import get_mac_address
-from Tools.IPv6_Tools import Solicited_node_multicast_address,mac_to_ipv6_linklocal
+from Part1_Classic_Protocols.Tools.GET_MAC_netifaces import get_mac_address
+from Part1_Classic_Protocols.Tools.IPv6_Tools import Solicited_node_multicast_address,mac_to_ipv6_linklocal
 
 
 # Windows 查看IPv6邻居 netsh int ipv6 show neigh
@@ -51,4 +51,4 @@ def icmpv6_ns(host, ifname):  # 请求特定IPv6地址的MAC地址
 
 if __name__ == '__main__':
     # Windows Linux均可使用
-    print(icmpv6_ns("2001:1::253", 'Net1'))
+    print(icmpv6_ns("2001:1::253", 'ens33'))

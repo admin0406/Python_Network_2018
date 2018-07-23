@@ -15,8 +15,8 @@ import time
 
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)  # 清除报错
 from scapy.all import *
-from Tools.GET_MAC_netifaces import get_mac_address
-from Tools.IPv6_Tools import mac_to_ipv6_linklocal
+from Part1_Classic_Protocols.Tools.GET_MAC_netifaces import get_mac_address
+from Part1_Classic_Protocols.Tools.IPv6_Tools import mac_to_ipv6_linklocal
 
 
 def icmpv6_ra(ifname):
@@ -37,7 +37,7 @@ def icmpv6_ra(ifname):
     # 提供MTU
     mtu = ICMPv6NDOptMTU(mtu=1500)
     # 提供前缀
-    prefix = ICMPv6NDOptPrefixInfo(prefix='2001:4::', prefixlen=64)
+    prefix = ICMPv6NDOptPrefixInfo(prefix='2001:2::', prefixlen=64)
     # 构建数据包
     packet = base / router_solicitation / src_ll_addr / mtu / prefix
 
@@ -54,4 +54,4 @@ def icmpv6_ra(ifname):
 
 if __name__ == '__main__':
     # Windows Linux均可使用
-    icmpv6_ra("Net1")
+    icmpv6_ra("ens33")

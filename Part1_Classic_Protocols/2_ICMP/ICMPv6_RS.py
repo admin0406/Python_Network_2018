@@ -21,8 +21,8 @@ import logging
 
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)  # 清除报错
 from scapy.all import *
-from Tools.GET_MAC_netifaces import get_mac_address
-from Tools.IPv6_Tools import mac_to_ipv6_linklocal
+from Part1_Classic_Protocols.Tools.GET_MAC_netifaces import get_mac_address
+from Part1_Classic_Protocols.Tools.IPv6_Tools import mac_to_ipv6_linklocal
 
 
 def icmpv6_rs(ifname):
@@ -44,7 +44,7 @@ def icmpv6_rs(ifname):
     # packet.show()
     # 发送数据包,接受返回数据包
     result = sr1(packet, timeout=2, verbose=False)
-    result.show()
+    # result.show()
     # 提取返回数据包中的网关MAC
     print("gwmac: ", result.getlayer("ICMPv6 Neighbor Discovery Option - Source Link-Layer Address").fields['lladdr'])
     # 提取返回数据包中的MTU
@@ -55,4 +55,4 @@ def icmpv6_rs(ifname):
 
 if __name__ == '__main__':
     # Windows Linux均可使用
-    icmpv6_rs("Net1")
+    icmpv6_rs("ens33")

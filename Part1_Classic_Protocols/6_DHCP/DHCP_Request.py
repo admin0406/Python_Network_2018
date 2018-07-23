@@ -13,6 +13,7 @@ logging.getLogger("scapy.runtime").setLevel(logging.ERROR)  # 清除报错
 from scapy.all import *
 import time
 from DHCP_Discover import chaddr
+from Part1_Classic_Protocols.Tools.Scapy_IFACE import scapy_iface  # 获取scapy iface的名字
 
 # Dynamic Host Configuration Protocol (DHCP) and Bootstrap Protocol (BOOTP) Parameters
 # https://www.iana.org/assignments/bootp-dhcp-parameters/bootp-dhcp-parameters.xhtml
@@ -51,11 +52,11 @@ def DHCP_Request_Sendonly(ifname, options, param_req_list, wait_time=1):
     if wait_time != 0:
         time.sleep(wait_time)
         sendp(request,
-              # iface=ifname, # Windows环境取消iface选项
+              iface=scapy_iface(ifname),
               verbose=False)
     else:
         sendp(request,
-              # iface=ifname, # Windows环境取消iface选项
+              iface=scapy_iface(ifname),
               verbose=False)
 
 

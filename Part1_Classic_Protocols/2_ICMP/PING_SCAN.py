@@ -13,7 +13,7 @@ logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
 from multiprocessing.pool import ThreadPool
 from PING_ONE import scapy_ping_one
 from scapy.all import *
-from Tools.SORT_IP import sort_ip
+from Part1_Classic_Protocols.Tools.SORT_IP import sort_ip
 
 
 def scapy_ping_scan(network):

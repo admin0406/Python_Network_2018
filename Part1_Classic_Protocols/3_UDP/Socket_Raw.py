@@ -8,9 +8,9 @@
 
 
 from socket import socket, AF_PACKET, SOCK_RAW
-from Tools.Checksum import do_checksum
-from Tools.Change_IP_To_Bytes import Change_IP_To_Bytes
-from Tools.Change_MAC_To_Bytes import Change_MAC_To_Bytes
+from Part1_Classic_Protocols.Tools.Checksum import do_checksum
+from Part1_Classic_Protocols.Tools.Change_IP_To_Bytes import Change_IP_To_Bytes
+from Part1_Classic_Protocols.Tools.Change_MAC_To_Bytes import Change_MAC_To_Bytes
 import struct
 import random
 
@@ -112,6 +112,7 @@ def UDP(src_port, dst_port, udp_length, u_data, src_ip_address, dst_ip_address, 
 
 
 if __name__ == "__main__":
+    # 只适用于Linux解释器
     # 创建原始套接字
     s = socket(AF_PACKET, SOCK_RAW)
     # 绑定到本地端口

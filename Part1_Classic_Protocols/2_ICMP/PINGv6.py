@@ -14,7 +14,7 @@ import logging
 
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)  # 清除报错
 from scapy.all import *
-from Tools.GET_IP_netifaces import get_ipv6_address
+from Part1_Classic_Protocols.Tools.GET_IP_netifaces import get_ipv6_address
 
 
 def scapy_pingv6_one(host, ifname):
@@ -34,4 +34,4 @@ def scapy_pingv6_one(host, ifname):
 
 if __name__ == '__main__':
     # Windows Linux均可使用
-    print(scapy_pingv6_one('2001:1::253', 'Net1'))
+    print(scapy_pingv6_one('2001:1::253', 'ens33'))
