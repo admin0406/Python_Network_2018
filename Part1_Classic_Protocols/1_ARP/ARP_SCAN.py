@@ -41,7 +41,7 @@ if __name__ == '__main__':
 
     t1 = time.time()
     print('活动IP地址如下:')
-    for ip in scapy_arp_scan("10.1.1.0/24", 'ens33'):
+    for ip in scapy_arp_scan("10.1.1.0/24", 'Net1'):
         print(str(ip))
     t2 = time.time()
     print('本次扫描时间: %.2f' % (t2 - t1))  # 计算并且打印扫描时间
