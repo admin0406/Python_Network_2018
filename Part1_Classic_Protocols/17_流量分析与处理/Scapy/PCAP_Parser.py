@@ -14,9 +14,9 @@ import re
 
 
 def pcap_parser(filename, keyword):
-    pkts = rdpcap(filename)
+    pkts = rdpcap(filename)  # 使用scapy的rdpcap函数打开pcap文件
     return_pkts_list = []  # 返回匹配数据包的清单！
-    for pkt in pkts.res:
+    for pkt in pkts.res:  # 遍历每一个数据包
         try:
             pkt_load = pkt.getlayer('Raw').fields['load'].decode().strip()  # 提取负载内容
             re_keyword = '.*' + keyword + '.*'
@@ -29,6 +29,7 @@ def pcap_parser(filename, keyword):
 
 
 if __name__ == "__main__":
+    # 使用Linux解释器 & WIN解释器
     pkts = pcap_parser("login_invalid.pcap", 'invalid')
     i = 1
     for pkt in pkts:

@@ -14,6 +14,7 @@ pkt_list = []
 
 cap = pyshark.FileCapture('dos.pcap', keep_packets=False, display_filter='tcp.analysis.retransmission')
 
+
 def print_highest_layer(pkt):
     pkt_list.append(pkt)
 

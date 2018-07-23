@@ -17,7 +17,7 @@ import hexdump
 def qythexdump(src, length=16):  # 每16个字节被提取出来，进行16进制的decode
     for i in range(0, len(src), length):
         s = src[i:i + length]
-        hex_result = hexdump.hexdump(s)
+        hexdump.hexdump(s)
 
 
 qyt_string = b''
@@ -31,8 +31,12 @@ def telnet_monitor_callback(pkt):
         pass
 
 
-PTKS = sniff(prn=telnet_monitor_callback, filter="tcp port 23 and ip host 10.1.1.253", store=1, timeout=10,
-             iface='ens33')
+PTKS = sniff(prn=telnet_monitor_callback,
+             filter="tcp port 23 and ip host 10.1.1.253",
+             store=1,
+             # iface='ens33',
+             timeout=10)
 
 wrpcap("telnet.cap", PTKS)
 qythexdump(qyt_string)
+
