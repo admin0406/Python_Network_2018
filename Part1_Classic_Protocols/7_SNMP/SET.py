@@ -50,4 +50,4 @@ if __name__ == "__main__":
     # 设置主机名
     snmpv2_set("10.1.1.253", "tcpiprw", "1.3.6.1.2.1.1.5.0", "Python_Net_R1", port=161)
     # shutdown G2
-    snmpv2_set("10.1.1.253", "tcpiprw", "1.3.6.1.2.1.2.2.1.7.2", 2, port=161)
+    snmpv2_set("10.1.1.253", "tcpiprw",    "1.3.6.1.2.1.2.2.1.7.2", 2, port=161)

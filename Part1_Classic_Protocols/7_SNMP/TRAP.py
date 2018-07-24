@@ -6,7 +6,7 @@
 # 教主技术进化论拓展你的技术新边疆
 # https://ke.qq.com/course/271956?tuin=24199d8a
 
-from Tools.GET_IP_netifaces import get_ip_address
+from Part1_Classic_Protocols.Tools.GET_IP_netifaces import get_ip_address
 from pysnmp.carrier.asynsock.dispatch import AsynsockDispatcher
 from pysnmp.carrier.asynsock.dgram import udp, udp6
 from pyasn1.codec.ber import decoder
@@ -56,8 +56,9 @@ def cbFun(transportDispatcher, transportDomain, transportAddress, wholeMsg):  # 
                 varBinds = pMod.apiPDU.getVarBindList(reqPDU)
             print('Var-binds:')
             for x in varBinds:  # 打印详细Trap信息
-                for x,y in x.items():
-                    print(x,y)
+                print(x)
+                # for x,y in x.items():
+                #     print(x,y)
     return wholeMsg
 
 
@@ -84,4 +85,4 @@ def snmp_trap_receiver(ifname, port=162):
 
 if __name__ == "__main__":
     # 使用Linux解释器 & WIN解释器
-    snmp_trap_receiver("Net1")
+    snmp_trap_receiver("ens33")
