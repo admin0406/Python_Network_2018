@@ -39,9 +39,19 @@ def snmpv2_get(ip, community, oid, port=161):
 
 if __name__ == "__main__":
     # 使用Linux解释器 & WIN解释器
+    # 系统描述
     print(snmpv2_get("10.1.1.253", "tcpipro", "1.3.6.1.2.1.1.1.0", port=161))
+    # 联系人
     print(snmpv2_get("10.1.1.253", "tcpipro", "1.3.6.1.2.1.1.4.0", port=161))
+    # 主机名
     print(snmpv2_get("10.1.1.253", "tcpipro", "1.3.6.1.2.1.1.5.0", port=161))
+    # 地点
     print(snmpv2_get("10.1.1.253", "tcpipro", "1.3.6.1.2.1.1.6.0", port=161))
+    # cpmCPUTotal5sec
+    print(snmpv2_get("10.1.1.253", "tcpipro", "1.3.6.1.4.1.9.9.109.1.1.1.1.3.7", port=161))
+    # cpmCPUMemoryUsed
+    print(snmpv2_get("10.1.1.253", "tcpipro", "1.3.6.1.4.1.9.9.109.1.1.1.1.12.7", port=161))
+    # cpmCPUMemoryFree
+    print(snmpv2_get("10.1.1.253", "tcpipro", "1.3.6.1.4.1.9.9.109.1.1.1.1.13.7", port=161))
 
 

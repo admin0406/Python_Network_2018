@@ -38,6 +38,15 @@ def snmpv2_getnext(ip, community, oid, port=161):
 
 if __name__ == "__main__":
     # 使用Linux解释器 & WIN解释器
+    # 显示接口信息
     print(snmpv2_getnext("10.1.1.253", "tcpipro", "1.3.6.1.2.1.2.2.1.2", port=161))
     for x, y in snmpv2_getnext("10.1.1.253", "tcpipro", "1.3.6.1.2.1.2.2.1.2", port=161):
         print(x, y)
+    # 接口速率
+    print(snmpv2_getnext("10.1.1.253", "tcpipro", "1.3.6.1.2.1.2.2.1.5", port=161))
+
+    # 进接口字节数
+    print(snmpv2_getnext("10.1.1.253", "tcpipro", "1.3.6.1.2.1.2.2.1.10", port=161))
+
+    # 出接口字节数
+    print(snmpv2_getnext("10.1.1.253", "tcpipro", "1.3.6.1.2.1.2.2.1.16", port=161))

@@ -75,4 +75,4 @@ def DHCP_Sinffer(ifname):
 
 if __name__ == '__main__':
     # 使用Linux解释器 & WIN解释器
-    DHCP_Sinffer('ens33')
+    DHCP_Sinffer('Net1')
