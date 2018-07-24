@@ -15,11 +15,13 @@ import struct
 import random
 
 
-def Ether(src, dst, ether_type=b"\x08\x00"):
-    # 构建源MAC地址
+def Ether(src, dst, ether_type="0800"):
+    # 构建源MAC地址,6个字节
     src_mac_addr = Change_MAC_To_Bytes(src)
-    # 构建目的MAC地址
+    # 构建目的MAC地址,6个字节
     dst_mac_addr = Change_MAC_To_Bytes(dst)
+    # 以太网类型为2个字节
+    ether_type = struct.pack('!H', int(ether_type, 16))
     # 拼接以太网头部,并返回
     return src_mac_addr + dst_mac_addr + ether_type
 
@@ -118,6 +120,10 @@ if __name__ == "__main__":
     # 绑定到本地端口
     s.bind(("ens33", 0))
 
+    # 本次试验需要WIN作为服务器,Linux作为客户端连接
+    dst_ip = "10.1.1.100"
+    src_ip = "10.1.1.80"
+
     # UDP传输数据
     udp_data = "cisco123456"
     # 计算IP总长度
@@ -125,13 +131,13 @@ if __name__ == "__main__":
     # 计算UDP总长度
     u_length = 8 + len(udp_data)
     # 产生以太网头部
-    ether_header = Ether("00-50-56-AB-5C-02", "00:50:56:ab:25:08", ether_type=b"\x08\x00")
+    ether_header = Ether("00-50-56-AB-5C-02", "00:50:56:ab:25:08", "0800")
     # 产生IP头部
-    ip_header = IP(Total_Length=t_length, IP_Flags_D=0, IP_Flags_M=0, Offset=0, TTL=128, Protocol=17, src="10.1.1.80",
-                   dst="10.1.1.100")
+    ip_header = IP(Total_Length=t_length, IP_Flags_D=0, IP_Flags_M=0, Offset=0, TTL=128, Protocol=17, src=src_ip,
+                   dst=dst_ip)
     # 产生UDP头部
-    udp_header = UDP(1024, 6666, udp_length=u_length, u_data=udp_data, src_ip_address="10.1.1.80",
-                     dst_ip_address="10.1.1.100")
+    udp_header = UDP(1024, 6666, udp_length=u_length, u_data=udp_data, src_ip_address=src_ip,
+                     dst_ip_address=dst_ip)
     # 拼接以太网头部,IP头部,UDP头部
     packet = ether_header + ip_header + udp_header + udp_data.encode()
     # 发送数据包
