@@ -123,6 +123,7 @@ def snmpv3_getbulk(ip='', user='', hash_meth=None, hash_key=None, cry_meth=None,
 
 if __name__ == '__main__':
     # 使用Linux解释器 & WIN解释器
+    # 接口信息
     for item in snmpv3_getbulk('10.1.1.253',
                                'qytanguser',
                                'sha',
@@ -130,5 +131,38 @@ if __name__ == '__main__':
                                'des',
                                'Cisc0123',
                                '1.3.6.1.2.1.2.2.1.2',
-                               10):
+                               5):
         print('OID: ', item[0], 'VALUE: ', item[1])  # 从oid_list读取并且打印信息
+
+    # 接口速率
+    # for item in snmpv3_getbulk('10.1.1.253',
+    #                            'qytanguser',
+    #                            'sha',
+    #                            'Cisc0123',
+    #                            'des',
+    #                            'Cisc0123',
+    #                            '1.3.6.1.2.1.2.2.1.5',
+    #                            5):
+    #     print('OID: ', item[0], 'VALUE: ', item[1])  # 从oid_list读取并且打印信息
+
+    # 进接口字节数
+    # for item in snmpv3_getbulk('10.1.1.253',
+    #                            'qytanguser',
+    #                            'sha',
+    #                            'Cisc0123',
+    #                            'des',
+    #                            'Cisc0123',
+    #                            '1.3.6.1.2.1.2.2.1.10',
+    #                            5):
+    #     print('OID: ', item[0], 'VALUE: ', item[1])  # 从oid_list读取并且打印信息
+
+    # 出接口字节数
+    # for item in snmpv3_getbulk('10.1.1.253',
+    #                            'qytanguser',
+    #                            'sha',
+    #                            'Cisc0123',
+    #                            'des',
+    #                            'Cisc0123',
+    #                            '1.3.6.1.2.1.2.2.1.16',
+    #                            5):
+    #     print('OID: ', item[0], 'VALUE: ', item[1])  # 从oid_list读取并且打印信息

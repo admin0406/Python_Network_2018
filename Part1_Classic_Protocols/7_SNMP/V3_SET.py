@@ -32,7 +32,7 @@ def cbFun(sendRequestHandle, errorIndication, errorStatus, errorIndex, varBindTa
     else:
         print("写入成功!!!")
         for oid, val in varBindTable:
-            print('%s = %s' % (oid.prettyPrint(), val.__bytes__()))
+            print('%s = %s' % (oid.prettyPrint(), val))
 
 
 def snmpv3_set(ip='', user='', hash_meth=None, hash_key=None, cry_meth=None, cry_key=None, oid='', customerString=''):
@@ -102,7 +102,12 @@ def snmpv3_set(ip='', user='', hash_meth=None, hash_key=None, cry_meth=None, cry
 
     # Prepare and send a request message
     # 创建'yourDevice'，有OID和处理方法cbFun
-    cmdgen.SetCommandGenerator().sendReq(snmpEngine, 'yourDevice', ((oid, rfc1902.OctetString(customerString)),), cbFun)
+    if isinstance(customerString, str):
+        set_value = rfc1902.OctetString(customerString)
+    elif isinstance(customerString, int):
+        set_value = rfc1902.Integer(customerString)
+
+    cmdgen.SetCommandGenerator().sendReq(snmpEngine, 'yourDevice', ((oid, set_value),), cbFun)
 
     # Run I/O dispatcher which would send pending queries and process responses
     snmpEngine.transportDispatcher.runDispatcher()  # 运行实例
@@ -110,4 +115,7 @@ def snmpv3_set(ip='', user='', hash_meth=None, hash_key=None, cry_meth=None, cry
 
 if __name__ == '__main__':
     # 使用Linux解释器 & WIN解释器
-    snmpv3_set('10.1.1.253', 'qytanguser', 'sha', 'Cisc0123', 'des', 'Cisc0123', '1.3.6.1.2.1.1.5.0', 'QYTR1')
+    # 配置主机名
+    snmpv3_set('10.1.1.253', 'qytanguser', 'sha', 'Cisc0123', 'des', 'Cisc0123', '1.3.6.1.2.1.1.5.0', 'QYTR10')
+    # shutdown G2
+    snmpv3_set('10.1.1.253', 'qytanguser', 'sha', 'Cisc0123', 'des', 'Cisc0123', '1.3.6.1.2.1.2.2.1.7.2', 2)

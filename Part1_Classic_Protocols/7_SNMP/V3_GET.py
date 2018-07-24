@@ -114,3 +114,11 @@ if __name__ == '__main__':
         print('OID: ', item[0], 'VALUE: ', item[1])  # 从oid_list读取并且打印信息
     for item in snmpv3_get('10.1.1.253', 'qytanguser', 'sha', 'Cisc0123', 'des', 'Cisc0123', '1.3.6.1.2.1.1.5.0'):
         print('OID: ', item[0], 'VALUE: ', item[1])  # 从oid_list读取并且打印信息
+    for item in snmpv3_get('10.1.1.253', 'qytanguser', 'sha', 'Cisc0123', 'des', 'Cisc0123', '1.3.6.1.2.1.1.6.0'):
+        print('OID: ', item[0], 'VALUE: ', item[1])  # 从oid_list读取并且打印信息
+    for item in snmpv3_get('10.1.1.253', 'qytanguser', 'sha', 'Cisc0123', 'des', 'Cisc0123', '1.3.6.1.4.1.9.9.109.1.1.1.1.3.7'):
+        print('OID: ', item[0], 'VALUE: ', item[1])  # 从oid_list读取并且打印信息
+    for item in snmpv3_get('10.1.1.253', 'qytanguser', 'sha', 'Cisc0123', 'des', 'Cisc0123', '1.3.6.1.4.1.9.9.109.1.1.1.1.12.7'):
+        print('OID: ', item[0], 'VALUE: ', item[1])  # 从oid_list读取并且打印信息
+    for item in snmpv3_get('10.1.1.253', 'qytanguser', 'sha', 'Cisc0123', 'des', 'Cisc0123', '1.3.6.1.4.1.9.9.109.1.1.1.1.13.7'):
+        print('OID: ', item[0], 'VALUE: ', item[1])  # 从oid_list读取并且打印信息
