@@ -13,6 +13,22 @@ from pyasn1.codec.ber import decoder
 from pysnmp.proto import api
 
 
+def analysis(info):
+    # 分析Trap信息字典函数
+    # 下面是这个大字典的键值与嵌套的小字典
+    # 1.3.6.1.2.1.1.3.0 {'value': 'ObjectSyntax', 'application-wide': 'ApplicationSyntax', 'timeticks-value': '103170310'}
+    # 1.3.6.1.6.3.1.1.4.1.0 {'value': 'ObjectSyntax', 'simple': 'SimpleSyntax', 'objectID-value': '1.3.6.1.6.3.1.1.5.4'}
+    # 1.3.6.1.2.1.2.2.1.1.2 {'value': 'ObjectSyntax', 'simple': 'SimpleSyntax', 'integer-value': '2'}
+    # 1.3.6.1.2.1.2.2.1.2.2 {'value': 'ObjectSyntax', 'simple': 'SimpleSyntax', 'string-value': 'GigabitEthernet2'}
+    # 1.3.6.1.2.1.2.2.1.3.2 {'value': 'ObjectSyntax', 'simple': 'SimpleSyntax', 'integer-value': '6'}
+    
+    if '1.3.6.1.6.3.1.1.4.1.0' in info.keys():
+        if info["1.3.6.1.6.3.1.1.4.1.0"]['objectID-value'] == '1.3.6.1.6.3.1.1.5.4':
+            print(info["1.3.6.1.2.1.2.2.1.2.2"]['string-value'], "UP")
+        elif info["1.3.6.1.6.3.1.1.4.1.0"]['objectID-value'] == '1.3.6.1.6.3.1.1.5.3':
+            print(info["1.3.6.1.2.1.2.2.1.2.2"]['string-value'], "Down")
+
+
 def cbFun(transportDispatcher, transportDomain, transportAddress, wholeMsg):  # 处理Trap信息的函数
     while wholeMsg:
         msgVer = int(api.decodeMessageVersion(wholeMsg))  # 提取版本信息
@@ -54,11 +70,29 @@ def cbFun(transportDispatcher, transportDomain, transportAddress, wholeMsg):  # 
                 varBinds = pMod.apiTrapPDU.getVarBindList(reqPDU)
             else:  # SNMPv2c的处理方法
                 varBinds = pMod.apiPDU.getVarBindList(reqPDU)
-            print('Var-binds:')
+                
+            result_dict = {}  # 每一个Trap信息,都会整理返回一个字典
+            # 下面是这个大字典的键值与嵌套的小字典
+            # 1.3.6.1.2.1.1.3.0 {'value': 'ObjectSyntax', 'application-wide': 'ApplicationSyntax', 'timeticks-value': '103170310'}
+            # 1.3.6.1.6.3.1.1.4.1.0 {'value': 'ObjectSyntax', 'simple': 'SimpleSyntax', 'objectID-value': '1.3.6.1.6.3.1.1.5.4'}
+            # 1.3.6.1.2.1.2.2.1.1.2 {'value': 'ObjectSyntax', 'simple': 'SimpleSyntax', 'integer-value': '2'}
+            # 1.3.6.1.2.1.2.2.1.2.2 {'value': 'ObjectSyntax', 'simple': 'SimpleSyntax', 'string-value': 'GigabitEthernet2'}
+            # 1.3.6.1.2.1.2.2.1.3.2 {'value': 'ObjectSyntax', 'simple': 'SimpleSyntax', 'integer-value': '6'}
             for x in varBinds:  # 打印详细Trap信息
-                print(x)
-                # for x,y in x.items():
-                #     print(x,y)
+                result = {}
+                for x, y in x.items():
+                    if x == "name":
+                        id = y.prettyPrint()  # 把name写入字典的键
+                    else:
+                        bind_v = [x.strip() for x in y.prettyPrint().split(":")]
+                        for v in bind_v:
+                            if v == '_BindValue':
+                                next
+                            else:
+                                result[v.split('=')[0]] = v.split('=')[1]
+                result_dict[id] = result
+            analysis(result_dict)
+
     return wholeMsg
 
 
@@ -85,4 +119,4 @@ def snmp_trap_receiver(ifname, port=162):
 
 if __name__ == "__main__":
     # 使用Linux解释器 & WIN解释器
-    snmp_trap_receiver("ens33")
+    snmp_trap_receiver("Net1")
