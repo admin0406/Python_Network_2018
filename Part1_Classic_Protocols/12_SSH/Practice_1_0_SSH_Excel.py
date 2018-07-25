@@ -43,6 +43,7 @@ def excel_ios_user_to_excel(ip, username, password, excelfile):
             re_result = re.match('username (\w+) password \w (\w+)', x).groups()
             user_dict[re_result[0]] = re_result[1], 1
     # 把字典的用户名，密码和级别信息，写入Excel
+    # sheel_name为IP地址
     excel_write(file=excelfile, sheel_name=ip, write_dict=user_dict)
 
 
