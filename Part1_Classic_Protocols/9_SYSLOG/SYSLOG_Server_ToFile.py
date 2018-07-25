@@ -38,7 +38,9 @@ if __name__ == "__main__":
     try:
         HOST, PORT = "0.0.0.0", 514  # 本地地址与端口
         server = socketserver.UDPServer((HOST, PORT), SyslogUDPHandler)  # 绑定本地地址，端口和syslog处理方法
+        print("Syslog 服务已启用, 写入日志到文本文件!!!")
         server.serve_forever(poll_interval=0.5)  # 运行服务器，和轮询间隔
+
     except (IOError, SystemExit):
         raise
     except KeyboardInterrupt:  # 捕获Ctrl+C，打印信息并退出

@@ -1,0 +1,66 @@
+<190>420: *Jul  9 06:26:33.811: %SYS-6-LOGGINGHOST_STARTSTOP: Logging to host 10.1.1.100 port 514 started - CLI initiated
+<189>421: *Jul  9 06:26:34.511: %SYS-5-CONFIG_I: Configured from console by admin on vty0 (10.1.1.100)
+<191>422: *Jul  9 06:26:34.513: SNMP: Queuing packet to 10.1.1.80
+<191>423: *Jul  9 06:26:34.513: SNMP: V2 Trap, reqid 351, errstat 0, erridx 0
+<191>424:  sysUpTime.0 = 59415330
+<191>425:  snmpTrapOID.0 = ccmCLIRunningConfigChanged
+<191>426:  ccmHistoryRunningLastChanged.0 = 59415160
+<191>427:  ccmHistoryEventTerminalType.5 = 5
+<191>428: *Jul  9 06:26:34.763: SNMP: Packet sent via UDP to 10.1.1.80
+<191>429: *Jul  9 06:26:36.906: SNMP: Queuing packet to 10.1.1.80
+<191>430: *Jul  9 06:26:36.907: SNMP: V2 Trap, reqid 352, errstat 0, erridx 0
+<191>431:  sysUpTime.0 = 59415569
+<191>432:  snmpTrapOID.0 = ciscoConfigManEvent
+<191>433:  ccmHistoryEventCommandSource.376 = 1
+<191>434:  ccmHistoryEventConfigSource.376 = 2
+<191>435:  ccmHistoryEventConfigDestination.376 = 3
+<191>436: *Jul  9 06:26:37.157: SNMP: Packet sent via UDP to 10.1.1.80
+<189>437: *Jul  9 06:26:42.691: %SYS-5-CONFIG_I: Configured from console by admin on vty0 (10.1.1.100)
+<191>438: *Jul  9 06:26:42.693: SNMP: Queuing packet to 10.1.1.80
+<191>439: *Jul  9 06:26:42.693: SNMP: V2 Trap, reqid 353, errstat 0, erridx 0
+<191>440:  sysUpTime.0 = 59416148
+<191>441:  snmpTrapOID.0 = ccmCLIRunningConfigChanged
+<191>442:  ccmHistoryRunningLastChanged.0 = 59416097
+<191>443:  ccmHistoryEventTerminalType.6 = 5
+<191>444: *Jul  9 06:26:42.943: SNMP: Packet sent via UDP to 10.1.1.80
+<189>445: *Jul  9 06:26:44.184: %LINK-5-CHANGED: Interface GigabitEthernet3, changed state to administratively down
+<189>446: *Jul  9 06:26:45.185: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet3, changed state to down
+<191>447: *Jul  9 06:26:45.186: SNMP: Queuing packet to 10.1.1.80
+<191>448: *Jul  9 06:26:45.186: SNMP: V2 Trap, reqid 354, errstat 0, erridx 0
+<191>449:  sysUpTime.0 = 59416397
+<191>450:  snmpTrapOID.0 = snmpTraps.3
+<191>451:  ifIndex.3 = 3
+<191>452:  ifDescr.3 = GigabitEthernet3
+<191>453:  ifType.3 = 6
+<191>454:  lifEntry.20.3 = administratively down
+<191>455: *Jul  9 06:26:45.437: SNMP: Packet sent via UDP to 10.1.1.80
+<189>456: *Jul  9 06:27:19.820: %SYS-5-CONFIG_I: Configured from console by admin on vty0 (10.1.1.100)
+<187>457: *Jul  9 06:27:28.502: %LINK-3-UPDOWN: Interface GigabitEthernet3, changed state to up
+<189>458: *Jul  9 06:27:29.502: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet3, changed state to up
+<189>3334: *Jul 22 00:25:35.155: %SYS-5-CONFIG_I: Configured from console by admin on vty0 (10.1.1.100)
+<189>3335: *Jul 22 00:25:45.381: %LINK-5-CHANGED: Interface GigabitEthernet2, changed state to administratively down
+<189>3336: *Jul 22 00:25:46.381: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet2, changed state to down
+<189>3337: *Jul 22 00:25:50.759: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet2, changed state to up
+<189>3338: *Jul 22 00:26:37.861: %LINK-5-CHANGED: Interface GigabitEthernet2, changed state to administratively down
+<189>3339: *Jul 22 00:26:38.861: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet2, changed state to down
+<189>3340: *Jul 22 00:26:49.763: %LINK-5-CHANGED: Interface GigabitEthernet2, changed state to administratively down
+<189>3341: *Jul 22 00:27:19.630: %SYS-5-CONFIG_I: Configured from console by admin on vty0 (10.1.1.100)
+<187>3342: *Jul 22 00:27:19.763: %LINK-3-UPDOWN: Interface GigabitEthernet2, changed state to up
+<189>3343: *Jul 22 00:27:20.763: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet2, changed state to up
+<189>3344: *Jul 22 00:28:03.774: %SYS-5-CONFIG_I: Configured from console by admin on vty0 (10.1.1.100)
+<189>3345: *Jul 22 00:28:12.688: %LINK-5-CHANGED: Interface GigabitEthernet2, changed state to administratively down
+<189>3346: *Jul 22 00:28:13.689: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet2, changed state to down
+<189>3347: *Jul 22 00:28:20.765: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet2, changed state to up
+<189>3348: *Jul 22 00:28:28.672: %LINK-5-CHANGED: Interface GigabitEthernet2, changed state to administratively down
+<189>3349: *Jul 22 00:28:29.672: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet2, changed state to down
+<189>3350: *Jul 22 00:28:32.222: %SYS-5-CONFIG_I: Configured from console by admin on vty0 (10.1.1.100)
+<187>3351: *Jul 22 00:28:39.766: %LINK-3-UPDOWN: Interface GigabitEthernet2, changed state to up
+<189>3352: *Jul 22 00:28:40.767: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet2, changed state to up
+<189>qytang syslog test
+<189>qytang syslog test
+<190>4490: *Jul 25 01:17:49.543: %SYS-6-LOGGINGHOST_STARTSTOP: Logging to host 10.1.1.100 port 514 started - CLI initiated
+<190>4492: *Jul 25 01:17:51.583: %SYS-6-LOGGINGHOST_STARTSTOP: Logging to host 10.1.1.80 port 514 started - CLI initiated
+<189>4493: *Jul 25 01:17:55.986: %SYS-5-CONFIG_I: Configured from console by admin on vty0 (10.1.1.100)
+<189>4494: *Jul 25 01:21:04.733: %SYS-5-CONFIG_I: Configured from console by admin on vty0 (10.1.1.100)
+<189>4495: *Jul 25 01:25:38.698: %SYS-5-CONFIG_I: Configured from console by admin on vty0 (10.1.1.100)
+<189>4496: *Jul 25 01:26:02.719: %SYS-5-CONFIG_I: Configured from console by admin on vty0 (10.1.1.100)
