@@ -38,31 +38,6 @@ for i in range(8):
     severity_level_dict[i] = severity_level_list[i]
 
 
-def createdb(dbname):
-    global gl_dbname
-    gl_dbname = dbname
-    if os.path.exists(dbname):
-        os.remove(dbname)
-    # 连接数据库
-    conn = sqlite3.connect(dbname)
-    cursor = conn.cursor()
-    # 创建数据库
-
-    cursor.execute("create table syslogdb(id INTEGER PRIMARY KEY AUTOINCREMENT,\
-                                         time varchar(64), \
-                                         device_ip varchar(32),\
-                                         facility int,\
-                                         facility_name varchar(32),\
-                                         severity_level int,\
-                                         severity_level_name varchar(32),\
-                                         logid int,\
-                                         log_source varchar(32), \
-                                         description varchar(128), \
-                                         text varchar(1024)\
-                                         )")
-    conn.commit()
-
-
 class SyslogUDPHandler(socketserver.BaseRequestHandler):
     def handle(self):
         data = bytes.decode(self.request[0].strip())  # 读取数据

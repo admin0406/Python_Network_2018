@@ -30,10 +30,10 @@ def IFMBR_check(ints, asic, slice, N):
         IFMBR_VAULE_FINAL = list(IFMBR_VAULE.strip())[-7]
     elif N == "8":
         IFMBR_VAULE_FINAL = list(IFMBR_VAULE.strip())[-8]
-    if (int(IFMBR_VAULE_FINAL, 16) % 2) == 0:
+    if (int(IFMBR_VAULE_FINAL, 16) % 2) == 0:  # 如果判断Bug条件成立!就shutdown/no shutdown端口,修复问题,并且产生syslog
         py_syslog(3, "Rwxouterbdstatetable for %s is incorrect!!" % ints)
         cli("conf t ; interface nve1 ; shutdown ; no shutdown")  # Reset the incorrect port
-    else:
+    else:   # 如果Bug条件不成立,依然产生syslog
         py_syslog(3, "Rwxouterbdstatetable for %s is correct!!" % ints)
 
 

@@ -37,20 +37,15 @@ def syslog_show(dbname):
         count_list.append(level_count[1])
 
     print(level_list)
-    print(count_list)
+    print([float(count) for count in count_list])
 
     plt.rcParams['font.sans-serif'] = ['SimHei']#设置中文
     #调节图形大小，宽，高
     plt.figure(figsize=(6,6))
-    #定义饼状图的标签，标签是列表
-    # labels = ['http协议','ftp协议','rdp协议','qq协议']
-    #每个标签占多大，会自动去算百分比
-    # sizes = [30,53,12,45]
-    colors = ['r','y','0.5','#FF00FF']
-    #将某部分爆炸出来， 使用括号，将第一块分割出来，数值的大小是分割出来的与其他两块的间隙
-    explode = (0.01,0.01,0.01,0.01)
 
-    patches,l_text,p_text = plt.pie(count_list,explode=explode,labels=level_list,colors=colors,
+    # 使用count_list的比例来绘制饼图
+    # 使用level_list作为注释
+    patches,l_text,p_text = plt.pie(count_list,labels=level_list,
                                     labeldistance = 1.1,autopct = '%3.1f%%',shadow = False,
                                     startangle = 90,pctdistance = 0.6)
 
