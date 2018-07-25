@@ -21,12 +21,13 @@ def analysis(info):
     # 1.3.6.1.2.1.2.2.1.1.2 {'value': 'ObjectSyntax', 'simple': 'SimpleSyntax', 'integer-value': '2'}
     # 1.3.6.1.2.1.2.2.1.2.2 {'value': 'ObjectSyntax', 'simple': 'SimpleSyntax', 'string-value': 'GigabitEthernet2'}
     # 1.3.6.1.2.1.2.2.1.3.2 {'value': 'ObjectSyntax', 'simple': 'SimpleSyntax', 'integer-value': '6'}
-    
+
     if '1.3.6.1.6.3.1.1.4.1.0' in info.keys():
         if info["1.3.6.1.6.3.1.1.4.1.0"]['objectID-value'] == '1.3.6.1.6.3.1.1.5.4':
             print(info["1.3.6.1.2.1.2.2.1.2.2"]['string-value'], "UP")
         elif info["1.3.6.1.6.3.1.1.4.1.0"]['objectID-value'] == '1.3.6.1.6.3.1.1.5.3':
             print(info["1.3.6.1.2.1.2.2.1.2.2"]['string-value'], "Down")
+    # print(info)  # 打印字典信息
 
 
 def cbFun(transportDispatcher, transportDomain, transportAddress, wholeMsg):  # 处理Trap信息的函数
@@ -81,6 +82,8 @@ def cbFun(transportDispatcher, transportDomain, transportAddress, wholeMsg):  # 
             for x in varBinds:  # 打印详细Trap信息
                 result = {}
                 for x, y in x.items():
+                    # print(x, y.prettyPrint())  # 最原始信息打印
+                    # 处理信息到字典
                     if x == "name":
                         id = y.prettyPrint()  # 把name写入字典的键
                     else:
@@ -91,6 +94,7 @@ def cbFun(transportDispatcher, transportDomain, transportAddress, wholeMsg):  # 
                             else:
                                 result[v.split('=')[0]] = v.split('=')[1]
                 result_dict[id] = result
+            # 把字典传到分析模块进行分析
             analysis(result_dict)
 
     return wholeMsg

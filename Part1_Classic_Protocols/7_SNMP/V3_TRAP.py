@@ -34,8 +34,17 @@ def analysis(info):
             print('*' * 20 + '配置模式改变' + '*' * 20)
             print('Exit Configure Mode!!!')
         # 需要进一步分析处理
-    for a, b in info.items():
-        print(a, b)
+        if info['1.3.6.1.6.3.1.1.4.1.0'] == '1.3.6.1.6.3.1.1.5.3':
+            state = 'Down'
+            print('*' * 20 + '接口状态改变' + '*' * 20)
+            print('%s change state to %s' % (info['1.3.6.1.2.1.2.2.1.2.2'], state))
+        if info['1.3.6.1.6.3.1.1.4.1.0'] == '1.3.6.1.6.3.1.1.5.4':
+            state = 'UP'
+            print('*' * 20 + '接口状态改变' + '*' * 20)
+            print('%s change state to %s' % (info['1.3.6.1.2.1.2.2.1.2.2'], state))
+
+    # for a, b in info.items():
+    #     print(a, b)
 
 
 def cbFun(snmpEngine, stateReference, contextEngineId, contextName, varBinds, cbCtx):

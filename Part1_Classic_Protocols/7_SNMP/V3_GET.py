@@ -31,7 +31,10 @@ def cbFun(sendRequestHandle, errorIndication, errorStatus, errorIndex, varBindTa
         print('%s at %s' % (errorStatus.prettyPrint(), errorIndex and varBindTable[-1][int(errorIndex) - 1] or '?'))
     else:
         for oid, val in varBindTable:
-            oid_list.append((oid.prettyPrint(), val.__bytes__()))  # 把oid和val的对添加到全局清单oid_list
+            try:
+                oid_list.append((oid.prettyPrint(), val.__bytes__()))  # 把oid和val的对添加到全局清单oid_list
+            except:
+                oid_list.append((oid.prettyPrint(), val))  # 把oid和val的对添加到全局清单oid_list
 
 
 def snmpv3_get(ip='', user='', hash_meth=None, hash_key=None, cry_meth=None, cry_key=None, oid=''):
@@ -110,15 +113,21 @@ def snmpv3_get(ip='', user='', hash_meth=None, hash_key=None, cry_meth=None, cry
 
 if __name__ == '__main__':
     # 使用Linux解释器 & WIN解释器
+    # 系统描述
     for item in snmpv3_get('10.1.1.253', 'qytanguser', 'sha', 'Cisc0123', 'des', 'Cisc0123', '1.3.6.1.2.1.1.1.0'):
         print('OID: ', item[0], 'VALUE: ', item[1])  # 从oid_list读取并且打印信息
+    # 主机名
     for item in snmpv3_get('10.1.1.253', 'qytanguser', 'sha', 'Cisc0123', 'des', 'Cisc0123', '1.3.6.1.2.1.1.5.0'):
         print('OID: ', item[0], 'VALUE: ', item[1])  # 从oid_list读取并且打印信息
+    # 地点
     for item in snmpv3_get('10.1.1.253', 'qytanguser', 'sha', 'Cisc0123', 'des', 'Cisc0123', '1.3.6.1.2.1.1.6.0'):
         print('OID: ', item[0], 'VALUE: ', item[1])  # 从oid_list读取并且打印信息
+    # cpmCPUTotal5sec
     for item in snmpv3_get('10.1.1.253', 'qytanguser', 'sha', 'Cisc0123', 'des', 'Cisc0123', '1.3.6.1.4.1.9.9.109.1.1.1.1.3.7'):
         print('OID: ', item[0], 'VALUE: ', item[1])  # 从oid_list读取并且打印信息
+    # cpmCPUMemoryUsed
     for item in snmpv3_get('10.1.1.253', 'qytanguser', 'sha', 'Cisc0123', 'des', 'Cisc0123', '1.3.6.1.4.1.9.9.109.1.1.1.1.12.7'):
         print('OID: ', item[0], 'VALUE: ', item[1])  # 从oid_list读取并且打印信息
+    # cpmCPUMemoryFree
     for item in snmpv3_get('10.1.1.253', 'qytanguser', 'sha', 'Cisc0123', 'des', 'Cisc0123', '1.3.6.1.4.1.9.9.109.1.1.1.1.13.7'):
         print('OID: ', item[0], 'VALUE: ', item[1])  # 从oid_list读取并且打印信息
