@@ -12,7 +12,7 @@ import time
 import sys
 
 
-def QYT_SSHClient_MultiCMD(ip, username, password, cmd_list):
+def QYT_SSHClient_MultiCMD(ip, username, password, cmd_list, verbose=True):
     ssh = paramiko.SSHClient()  # 创建SSH Client
     ssh.load_system_host_keys()  # 加载系统SSH密钥
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())  # 添加新的SSH密钥
@@ -27,7 +27,8 @@ def QYT_SSHClient_MultiCMD(ip, username, password, cmd_list):
         chan.send(b'\n')  # 一定要注意输入回车
         time.sleep(2)  # 由于有些回显可能过长，所以可以考虑等待更长一些时间
         x = chan.recv(40960).decode()  # 读取回显，有些回想可能过长，请把接收缓存调大
-        print(x)  # 打印回显
+        if verbose:
+            print(x)  # 打印回显
 
     chan.close()  # 退出交互式shell
     ssh.close()  # 退出ssh会话

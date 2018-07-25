@@ -17,7 +17,7 @@
 import sqlite3
 from dateutil import parser
 from matplotlib import pyplot as plt
-from SYSLOG_Server_ToDB import severity_level_dict
+from Practice_SYSLOG_Server_ToDB import severity_level_dict
 
 
 def syslog_show(dbname):
