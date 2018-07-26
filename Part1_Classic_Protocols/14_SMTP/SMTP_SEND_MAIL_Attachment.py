@@ -27,7 +27,7 @@ def qyt_smtp_attachment(mailserver, username, password, From, To, Subj, Main_Bod
     part = MIMEText(Main_Body)
     msg.attach(part)  # 添加正文
 
-    if files:  # 如果存在附件文件
+    if files:  # 如果存在附件文件3
         for file in files:  # 逐个读取文件,并添加到附件
             part = MIMEApplication(open(file, 'rb').read())
             part.add_header('Content-Disposition', 'attachment', filename=file)
