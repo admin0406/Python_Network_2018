@@ -14,6 +14,7 @@ import re
 
 
 def findpcapdos(pcap_filename):
+    # 本代码的主要任务: 对会话(源,目,目的端口)统计会话数量,用于判断DoS攻击
     pkts_file = rdpcap(pcap_filename)  # 使用scapy的rdpcap函数打开pcap文件
     pkt_list = pkts_file.res  # 提取每一个包到清单pkt_list
 

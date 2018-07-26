@@ -17,6 +17,7 @@ qyt_string = b''
 
 
 def reset_tcp(pkt):
+    # 本代码主要任务: 对传入的数据包,发送TCP Rest进行会话重置
     source_mac = pkt[Ether].fields['src']
     destination_mac = pkt[Ether].fields['dst']
     source_ip = pkt[IP].fields['src']
@@ -41,6 +42,7 @@ def reset_tcp(pkt):
 
 
 def telnet_monitor_callback(pkt):
+    # 通过对Telnet会话数据的拼接,判断是否出现show ver字段, 如果出现重置会话
     global qyt_string
     try:
         if pkt.getlayer(TCP).fields['dport'] == 23:
@@ -54,6 +56,7 @@ def telnet_monitor_callback(pkt):
         
 
 def telnet_rst(user_filter, ifname):
+    # 本代码主要任务: 使用过滤器捕获数据包, 把捕获的数据包交给telnet_monitor_callback进行处理
     global global_if
     global_if = scapy_iface(ifname)
     PTKS = sniff(prn=telnet_monitor_callback,

@@ -14,6 +14,7 @@ from Part1_Classic_Protocols.Tools.Scapy_IFACE import scapy_iface
 
 
 def tcp_monitor_callback(pkt):
+    # 本代码主要任务: 对传入的数据包,发送TCP Rest进行会话重置
     source_mac = pkt[Ether].fields['src']
     destination_mac = pkt[Ether].fields['dst']
     source_ip = pkt[IP].fields['src']
@@ -38,6 +39,7 @@ def tcp_monitor_callback(pkt):
 
 
 def tcp_reset(src_ip, dst_ip, dst_port, ifname, src_port=None):
+    # 本代码主要任务: 搜索匹配过滤条件的数据包,然后使用tcp_monitor_callback方法进行重置会话处理
     global global_if
     global_if = scapy_iface(ifname)
     if src_port is None:
@@ -47,7 +49,7 @@ def tcp_reset(src_ip, dst_ip, dst_port, ifname, src_port=None):
     print("开始匹配异常流量" + match)
     sniff(prn=tcp_monitor_callback,
           filter=match,
-          iface=global_if,  # Windows环境不能使用iface参数
+          iface=global_if,
           store=0)
 
 

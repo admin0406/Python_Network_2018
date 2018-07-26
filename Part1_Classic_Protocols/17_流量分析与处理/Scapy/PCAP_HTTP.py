@@ -14,6 +14,8 @@ import re
 
 
 def findpcapuri(pcap_filename, host_regex):
+    # 本代码主要任务: 搜索PCAP文件里边的所有数据包,找到HTTP Host字段匹配正则表达式host_regex的HTTP请求数据包
+    # 并收集这个HTTP请求的Host, URI , User_Agent字段
     pkts_file = rdpcap(pcap_filename)  # 使用scapy的rdpcap函数打开pcap文件
     pkt_list = pkts_file.res  # 提取每一个包到清单pkt_list
     result_list = []
@@ -41,11 +43,15 @@ def findpcapuri(pcap_filename, host_regex):
 if __name__ == '__main__':
     # 使用Linux解释器 & WIN解释器
     result = findpcapuri("dos.pcap", 'sina\.com\.cn')
+
+    # 对找到数据包进行展示,打印Host, URI , User_Agent
     # for http_info in result:
     #     print('====================================================================')
     #     print(b'Host: ' + http_info[0])
     #     print(b'URI: ' + http_info[1])
     #     print(b'User_Agent: ' + http_info[2])
+
+    # 展示所有host, 使用集合技术, 去除重复部分
     host_list = []
     for http_info in result:
         host_list.append(http_info[0])

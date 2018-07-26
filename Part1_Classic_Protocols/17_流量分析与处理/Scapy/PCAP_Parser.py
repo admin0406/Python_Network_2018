@@ -14,6 +14,7 @@ import re
 
 
 def pcap_parser(filename, keyword):
+    # 本代码主要任务: 搜索PCAP文件里边的所有数据包,找到匹配关键字的数据包
     pkts = rdpcap(filename)  # 使用scapy的rdpcap函数打开pcap文件
     return_pkts_list = []  # 返回匹配数据包的清单！
     for pkt in pkts.res:  # 遍历每一个数据包
@@ -30,6 +31,7 @@ def pcap_parser(filename, keyword):
 
 if __name__ == "__main__":
     # 使用Linux解释器 & WIN解释器
+    # 搜索PCAP文件"login_invalid.pcap"中,出现invalid关键字的数据包
     pkts = pcap_parser("login_invalid.pcap", 'invalid')
     i = 1
     for pkt in pkts:
