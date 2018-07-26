@@ -107,22 +107,32 @@ def mails_write_db(dbname, popaddress, username, password):
 
 
 def show_mail(dbname):
+    # 连接数据库,读取邮件信息
     conn = sqlite3.connect(dbname)
     cursor = conn.cursor()
     cursor.execute("select * from maildb")
     yourresults = cursor.fetchall()
+
+    # 查看是否有附件内容
     for i in yourresults:
         if i[6] == '[]':
             attch = 'NO'
         else:
             attch = 'YES'
+        # 打印邮件信息
         print('ID: %d 时间: %s FROM: %s 主题: %s 正文: %s 是否有附件: %s' % (i[0], i[1], i[3], i[4], i[5][:100], attch))
 
+    # 让客户判断是否把附件保存为文件
     mail_id = input('输入需要保存附件的邮件ID:')
-    # print(("select attach_ from maildb where id=%s" % mail_id))
+
+    # 提取客户需要保存附件的邮件的附件
     cursor.execute("select attach_ from maildb where id=%s" % mail_id)
     yourresults = cursor.fetchall()
+
+    # 把附件内容使用json,转换为Python对象(列表)
     files = json.loads(yourresults[0][0])
+
+    # 把附件保存为本地文件
     for file in files:
         filename = file[0]
         fp = open(filename, 'wb')
