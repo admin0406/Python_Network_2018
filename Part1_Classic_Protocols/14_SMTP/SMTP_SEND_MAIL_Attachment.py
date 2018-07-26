@@ -18,7 +18,7 @@ def qyt_smtp_attachment(mailserver, username, password, From, To, Subj, Main_Bod
     # 使用SSL加密SMTP发送邮件, 此函数发送的邮件有主题,有正文,还可以发送附件
     Tos = To.split(';')  # 把多个邮件接受者通过';'分开
     Date = email.utils.formatdate()  # 格式化邮件时间
-    msg = MIMEMultipart()
+    msg = MIMEMultipart()  # 产生MIME多部分的邮件信息
     msg["Subject"] = Subj  # 主题
     msg["From"] = From  # 发件人
     msg["To"] = To  # 收件人

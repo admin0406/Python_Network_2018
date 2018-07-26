@@ -36,6 +36,7 @@ def qyt_rec_mail(mailserver, mailuser, mailpasswd):
                     for key in part_dict:
                         if key[0] == 'Subject':
                             # =?utf-8?b?6ZmE5Lu25rWL6K+VX+S4u+mimA==?=
+                            #   utf-8   6ZmE5Lu25rWL6K+VX+S4u+mimA== (转码后为:附件测试_主题)
                             if re.match('=\?(.*)\?\w\?(.*)=\?', key[1]).groups():
                                 re_result = re.match('=\?(.*)\?\w\?(.*)\?=', key[1]).groups()
                                 # re_result[0] 为编码方式
