@@ -45,6 +45,7 @@ def print_highest_layer(pkt):
     print(pkt.tcp.flags)
     print(pkt.tcp.dstport)
     print(pkt.http.request_method)
+    print(pkt.http.user_agent)
     pkt_list.append(pkt)
 
 
