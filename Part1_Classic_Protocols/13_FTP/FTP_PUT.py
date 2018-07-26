@@ -9,7 +9,6 @@
 
 import ftplib
 import os
-import optparse
 
 
 def putfile(hostname, file, username='anonymous', password='1@2.net', rdir='.', ldir='.', verbose=True):

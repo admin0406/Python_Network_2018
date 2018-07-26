@@ -56,4 +56,4 @@ if __name__ == '__main__':
     for http_info in result:
         host_list.append(http_info[0])
     print(host_list)
-    print([i[0].decode() for i in zip(host_list)])  # 使用集合技术,找到不重复的Host
+    print([i.decode() for i in list(set(host_list))])  # 使用集合技术,找到不重复的Host
