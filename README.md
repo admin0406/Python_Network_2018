@@ -10,6 +10,11 @@
 3. 网络编程实战(学习之前的两个部分课程)
 ![](https://gitee.com/qytang/Python_Network_2018/raw/master/img/net3.png)
 
+#### 课前需要具备的基础知识
+[1.亁颐堂现任明教教主 TCPIP2017课程](https://gitee.com/qytanggit/TCPIP2017)
+
+[2.亁颐堂现任明教教主 Python基础课](https://gitee.com/qytanggit/Python_Basic)
+
 #### 试听视频
 [腾讯视频 1.课程介绍](https://v.qq.com/x/page/c07325sfq17.html)
 
