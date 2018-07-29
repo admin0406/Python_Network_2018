@@ -20,7 +20,7 @@ def arp_request(ip_address, ifname='ens33'):
     localip = get_ip_address(ifname)
     # 获取本机MAC地址
     localmac = get_mac_address(ifname)
-    try:  # 发送ARP请求并等待响应
+    try:  # 发送ARP请求并等待响应!
         result_raw = sr1(ARP(op=1,
                              hwsrc=localmac, hwdst='00:00:00:00:00:00',
                              psrc=localip, pdst=ip_address),
